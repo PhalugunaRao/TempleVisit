@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pull_to_refresh"
+    android:layout_width="match_parent"
+    android:background="@color/card_divider"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <com.shimmer.ShimmerRecyclerView
+        android:id="@+id/recyclerview_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shimmer_demo_child_count="10"
+        app:shimmer_demo_layout="@layout/layout_demo"
+        fab:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:visibility="visible"
+        />
+
+</LinearLayout>

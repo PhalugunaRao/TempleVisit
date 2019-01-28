@@ -74,6 +74,36 @@ public class NetworkHandlerController {
         return customHeaders;
     }*/
 
+    public void volleyGetRequestT(Context context, String url,
+                                 final ResultListener resultListener, final String from) {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        resultListener.onResult(true, response, null, progressDialog, from);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        resultListener.onResult(false, null, error, progressDialog, from);
+                        error.printStackTrace();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+
+                return super.getHeaders();
+            }
+        };
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleyRequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
     public void volleyGetRequest(Context context, String url,
                                  final HashMap<String, String> customHeader,
                                  final ResultListener resultListener, final String from) {

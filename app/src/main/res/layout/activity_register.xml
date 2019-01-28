@@ -1,0 +1,157 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/register_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_20"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/floating_text_register_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginRight="@dimen/margin_24"
+                android:theme="@style/txt_login_style"
+                app:errorTextAppearance="@style/error_appearance_login">
+
+                <EditText
+                    android:id="@+id/edit_text_register_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Full Name*"
+                    android:importantForAutofill="noExcludeDescendants"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/card_first"
+                    android:textColorHint="@color/cement_color"
+                    android:textCursorDrawable="@null"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/textsize_16" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/floating_sponser_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginRight="@dimen/margin_24"
+
+                android:theme="@style/txt_login_style"
+                app:errorTextAppearance="@style/error_appearance_login">
+
+                <EditText
+                    android:id="@+id/edit_text_sponser_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTint="#d8d8d8"
+                    android:hint="Sponsor code*"
+                    android:importantForAutofill="noExcludeDescendants"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/card_first"
+                    android:textColorHint="@color/cement_color"
+                    android:textCursorDrawable="@null"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/textsize_16" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/floating_user_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginRight="@dimen/margin_24"
+                android:theme="@style/txt_login_style"
+                app:errorTextAppearance="@style/error_appearance_login">
+
+                <EditText
+                    android:id="@+id/edit_text_user_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_password_visibility"
+                    android:drawableTint="#d8d8d8"
+                    android:hint="Password*"
+                    android:importantForAutofill="noExcludeDescendants"
+                    android:inputType="textPassword|textNoSuggestions"
+                    android:maxLines="1"
+                    android:textColor="@color/card_first"
+                    android:textColorHint="@color/cement_color"
+                    android:textCursorDrawable="@null"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/textsize_16" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_30"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="@dimen/margin_8"
+                android:textColor="@color/card_second"
+                android:textSize="@dimen/textsize_12"
+                 />
+
+            <TextView
+                android:id="@+id/button_next_register"
+                style="@style/loginButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginRight="@dimen/margin_24"
+                android:background="@drawable/rounded_rectangle_one"
+                android:gravity="center"
+                android:padding="@dimen/margin_10"
+                android:text="SignUp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/heading2"
+               />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

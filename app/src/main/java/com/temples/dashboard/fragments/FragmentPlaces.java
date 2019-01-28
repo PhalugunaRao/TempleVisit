@@ -23,6 +23,7 @@ import com.temples.holders.PlaceViewHolder;
 import com.temples.holders.ViewHolderNoDataAction;
 import com.temples.model.ParkModel;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.NetworkCaller;
 import com.temples.utils.NoDataFoundCommonModel;
 import com.temples.utils.PreferenceHelper;
 
@@ -134,7 +135,7 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
 
     public void registerEventDetails() {
         isLoaded = true;
-        if (NetworkHandlerController.getInstance().isInternetOncheck(getActivity())) {
+        if (NetworkCaller.isInternetOncheck(getContext())) {
             backgoundgthreadStoreData();
             isNoInternetViewDisplaing = false;
         } else {

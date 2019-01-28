@@ -15,7 +15,11 @@
     <string name="no_data_document_message">Upload your medical records to get a detailed digitized reports and customised suggestions to improve your health. Just click on the “+” button to add a medical document.</string>
     <string name="no_documents_title">No documents</string>
     <string name="no_internet_title">No  Internet Connection</string>
+    <string name="no_net_message">It looks like you are not connected to internet,please turn on internet and try again.</string>
+
     <string name="exception_message">Something went wrong, try again.</string>
     <string name="exception_title">Ooops....</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="no_my_event_title_empty">It seems that you haven’t registered to any events yet. Why don\’t you have a look at all the events
+and see what interests you.</string>
 </resources>

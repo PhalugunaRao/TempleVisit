@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.temples.R;
+import com.temples.dashboard.DashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         instructionText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }

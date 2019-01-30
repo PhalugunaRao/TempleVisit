@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.temples.R;
 import com.temples.adapter.SplashAdapter;
-import com.temples.dashboard.DashboardActivity;
 
 import org.json.JSONObject;
 
@@ -205,7 +204,7 @@ public class SplashScreenActivity extends FragmentActivity {
         {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();

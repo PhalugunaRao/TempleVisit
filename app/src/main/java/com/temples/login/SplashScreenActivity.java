@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.temples.R;
 import com.temples.adapter.SplashAdapter;
+import com.temples.dashboard.DashboardActivity;
 
 import org.json.JSONObject;
 
@@ -50,7 +51,6 @@ public class SplashScreenActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //Fabric.with(this, new Crashlytics());
         setContentView(R.layout.splash_screen);
         //prefs = new PreferenceHelper(this);
         try {
@@ -205,7 +205,7 @@ public class SplashScreenActivity extends FragmentActivity {
         {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();

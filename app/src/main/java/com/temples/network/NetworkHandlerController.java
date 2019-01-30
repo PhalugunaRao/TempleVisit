@@ -3,7 +3,7 @@ package com.temples.network;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.widget.Toast;
+import android.net.NetworkInfo;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -12,7 +12,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.temples.login.TestActivity;
 import com.temples.utils.PreferenceHelper;
 import com.temples.utils.VolleyRequestSingleton;
 
@@ -264,11 +263,13 @@ public class NetworkHandlerController {
     }
 
     public static boolean isInternetOncheck(Context context) {
-        ConnectivityManager connec = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (!(connec.getActiveNetworkInfo() != null && connec.getActiveNetworkInfo().isAvailable() && connec.getActiveNetworkInfo().isConnected())) {
-            return false;
-        } else {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+        if ( networkInfo != null && networkInfo.isConnectedOrConnecting()){
             return true;
+        }else{
+            return false;
         }
 
 

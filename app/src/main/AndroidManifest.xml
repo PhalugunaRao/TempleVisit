@@ -26,8 +26,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".login.TestActivity"></activity>
+        <activity android:name=".login.RegisterActivity"></activity>
         <activity android:name="com.temples.dashboard.DashboardActivity"></activity>
+        <activity android:name=".dashboard.MainActivity"></activity>
     </application>
 
 </manifest>

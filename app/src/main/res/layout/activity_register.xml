@@ -43,7 +43,7 @@
                     android:id="@+id/edit_text_register_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Full Name*"
+                    android:hint="Name*"
                     android:importantForAutofill="noExcludeDescendants"
                     android:inputType="text"
                     android:maxLines="1"
@@ -54,23 +54,49 @@
                     android:textSize="@dimen/textsize_16" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/floating_sponser_code"
+                android:id="@+id/floating_email_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_24"
                 android:layout_marginRight="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_25"
 
                 android:theme="@style/txt_login_style"
                 app:errorTextAppearance="@style/error_appearance_login">
 
                 <EditText
-                    android:id="@+id/edit_text_sponser_code"
+                    android:id="@+id/edit_text_email_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableTint="#d8d8d8"
-                    android:hint="Sponsor code*"
+                    android:hint="Email*"
                     android:importantForAutofill="noExcludeDescendants"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textColor="@color/card_first"
+                    android:textColorHint="@color/cement_color"
+                    android:textCursorDrawable="@null"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/textsize_16" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/floating_mobile_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginRight="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_25"
+                android:theme="@style/txt_login_style"
+                app:errorTextAppearance="@style/error_appearance_login">
+
+                <EditText
+                    android:id="@+id/edit_text_mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTint="#d8d8d8"
+                    android:hint="Mobile Number*"
+                    android:importantForAutofill="noExcludeDescendants"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:textColor="@color/card_first"
                     android:textColorHint="@color/cement_color"
@@ -87,6 +113,7 @@
                 android:layout_marginLeft="@dimen/margin_24"
                 android:layout_marginRight="@dimen/margin_24"
                 android:theme="@style/txt_login_style"
+                android:layout_marginTop="@dimen/margin_25"
                 app:errorTextAppearance="@style/error_appearance_login">
 
                 <EditText

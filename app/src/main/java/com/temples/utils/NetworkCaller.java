@@ -35,31 +35,6 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 public class NetworkCaller {
-    private static TypeAdapter<Number> LongTypeAdapter = new TypeAdapter<Number>() {
-
-        @Override
-        public void write(JsonWriter out, Number value)
-                throws IOException {
-            out.value(value);
-        }
-
-        @Override
-        public Number read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return null;
-            }
-            try {
-                String result = in.nextString();
-                if ("".equals(result)) {
-                    return null;
-                }
-                return Long.parseLong(result);
-            } catch (NumberFormatException e) {
-                throw new JsonSyntaxException(e);
-            }
-        }
-    };
     public Context mActivity;
     public boolean isNetError = false;
     public boolean isConnectionTimeError = false;

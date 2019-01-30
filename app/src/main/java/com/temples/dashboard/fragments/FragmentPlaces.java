@@ -135,7 +135,7 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
 
     public void registerEventDetails() {
         isLoaded = true;
-        if (NetworkCaller.isInternetOncheck(getContext())) {
+        if (NetworkHandlerController.isInternetOncheck(getContext())) {
             backgoundgthreadStoreData();
             isNoInternetViewDisplaing = false;
         } else {

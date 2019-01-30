@@ -1,8 +1,8 @@
 package com.temples.login;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,20 +23,24 @@ import com.temples.utils.UrlData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TestActivity extends AppCompatActivity implements NetworkHandlerController.ResultListener {
+public class RegisterActivity extends AppCompatActivity implements NetworkHandlerController.ResultListener {
 
     TextInputLayout textInputLayoutFirstName;
     TextInputLayout textInputLayoutPasswordNumber;
-    TextInputLayout textInputLayoutsponserCode;
+    TextInputLayout textInputLayoutsMobile;
+    TextInputLayout textInputLayoutEmailID;
+
+
     EditText editTextRegisterName;
     EditText editTextRegisterPasssword;
-    EditText editTextSponseCode;
+    EditText editTextMobileNumber;
+    EditText editTextEmailID;
     private TextView textViewRegister, button_register;
     PreferenceHelper prefs;
+
 
 
     @Override
@@ -49,6 +53,7 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
         editTextRegisterUserNameLogic();
         editTextRegisterPasswordLogic();
         editTextRegisterSponserLogic();
+        editTextRegisterEmailLogic();
         button_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,29 +65,32 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
 
     private void regesterValidation() {
         if (editTextRegisterName.getText() != null) {
-
             Pattern pattern = Pattern.compile("^[a-zA-Z\\s]+$");
             Matcher matcher = pattern.matcher(editTextRegisterName.getText().toString());
-
-
             if (!matcher.matches()) {
                 textInputLayoutFirstName.setError("Special characters are not allowed in username");
             } else {
                 textInputLayoutFirstName.setErrorEnabled(false);
             }
         }
+
         if (editTextRegisterName.getText().toString().isEmpty()) {
             textInputLayoutFirstName.setError("Username can't be empty");
         }
 
         if (editTextRegisterPasssword.getText().toString().isEmpty()) {
             textInputLayoutPasswordNumber.setError("Password can't be empty");
-        } else if (editTextRegisterPasssword.getText().toString().length() < 8) {
-            textInputLayoutPasswordNumber.setError("Password length must be 8");
         }
-        if (editTextSponseCode.getText().toString().isEmpty()) {
-            textInputLayoutsponserCode.setError("Sponsor code should not be empty");
-        } else {
+
+        if (editTextMobileNumber.getText().toString().isEmpty()) {
+            textInputLayoutsMobile.setError("Invalid Mobile Number");
+        }
+
+        if (!editTextEmailID.getText().toString().matches(UrlData.emailPATTERN) || editTextEmailID.getText().toString().isEmpty()) {
+            textInputLayoutEmailID.setError("Invalid Email id");
+        }
+
+        else {
             regesterMethodCall();
         }
     }
@@ -91,11 +99,13 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
     private void initViews() {
         textInputLayoutFirstName =  findViewById(R.id.floating_text_register_name);
         textInputLayoutPasswordNumber =  findViewById(R.id.floating_user_password);
-        textInputLayoutsponserCode =  findViewById(R.id.floating_sponser_code);
+        textInputLayoutsMobile =  findViewById(R.id.floating_mobile_number);
+        textInputLayoutEmailID=findViewById(R.id.floating_email_id);
         button_register =  findViewById(R.id.button_next_register);
         editTextRegisterName = findViewById(R.id.edit_text_register_user_name);
         editTextRegisterPasssword =  findViewById(R.id.edit_text_user_password);
-        editTextSponseCode =  findViewById(R.id.edit_text_sponser_code);
+        editTextMobileNumber =  findViewById(R.id.edit_text_mobile_number);
+        editTextEmailID=findViewById(R.id.edit_text_email_id);
     }
 
     private void editTextRegisterUserNameLogic() {
@@ -110,17 +120,7 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
 
                 if (editTextRegisterName.getText().toString().isEmpty()) {
                     textInputLayoutFirstName.setError("Invalid name");
-                }/* else {
-                    for (int i = start; i < before; i++) {
-                        if (!Character.isLetter(s.charAt(i)) &&
-                                !Character.toString(s.charAt(i)).equals("_") &&
-                                !Character.toString(s.charAt(i)).equals("-") && !Character.toString(s.charAt(i)).equals("*") && !Character.toString(s.charAt(i)).equals("!")) {
-                            textInputLayoutFirstName.setError("Special Characters and numbers are not allowed.");
-                        }else {
-                            textInputLayoutFirstName.setErrorEnabled(false);
-                        }
-                    }
-                }*/
+                }
             }
 
             @Override
@@ -130,8 +130,9 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
         });
     }
 
-    private void editTextRegisterSponserLogic() {
-        editTextSponseCode.addTextChangedListener(new TextWatcher() {
+    private void editTextRegisterEmailLogic(){
+
+        editTextEmailID.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -139,8 +140,29 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editTextSponseCode.getText().toString().isEmpty()) {
-                    textInputLayoutsponserCode.setError("Invalid Sponsor Code");
+                if (editTextEmailID.getText().toString().isEmpty()) {
+                    textInputLayoutsMobile.setError("Invalid Email id");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+    private void editTextRegisterSponserLogic() {
+        editTextMobileNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (editTextMobileNumber.getText().toString().isEmpty()) {
+                    textInputLayoutsMobile.setError("Invalid Sponsor Code");
                 }
             }
 
@@ -175,23 +197,21 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
     }
 
     private void regesterMethodCall() {
-        JSONObject object2 = new JSONObject();
-        JSONObject object = new JSONObject();
+
+         JSONObject object = new JSONObject();
         try {
 
-            object.put("first_name", editTextRegisterName.getText());
-            object.put("last_name", "");
-            //object.put("email", textRegisterEmail.getText());
+            object.put("fullName", editTextRegisterName.getText());
+            object.put("emailId", editTextEmailID.getText());
             object.put("password", editTextRegisterPasssword.getText());
-            object2.put("sponsor_code", editTextSponseCode.getText());
+            object.put("mobileNumber", editTextMobileNumber.getText());
 
-            object2.put("online_customer", object);
         } catch (JSONException e1) {
         } catch (ArrayIndexOutOfBoundsException e) {
         }
-        if (NetworkHandlerController.getInstance().isInternetOncheck(TestActivity.this)) {
+        if (NetworkHandlerController.getInstance().isInternetOncheck(RegisterActivity.this)) {
             // mParcelabelClass= new Login();
-            registerVolleyRequest(object2);
+            registerVolleyRequest(object);
         } else {
             //No internet message
         }
@@ -209,6 +229,34 @@ public class TestActivity extends AppCompatActivity implements NetworkHandlerCon
 
     @Override
     public void onResult(boolean isSuccess, JSONObject resultObject, VolleyError volleyError, ProgressDialog progressDialog, String from) {
+        if(isSuccess){
+            System.out.println("RegisterActivity.onResult==="+resultObject.toString());
+            if(resultObject!=null){
+                try {
+                    String statusCode=resultObject.getString("statusCode");
+                    String statusMessage=resultObject.getString("statusMessage");
+                    System.out.println("RegisterActivity.onResult==="+statusCode);
+                    switch (statusCode){
+                        case "3":
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            break;
+                        case  "1":
+                        case  "2":
+                        case  "0":
+                            Toast.makeText(RegisterActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                           break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
+        }else{
+
+        }
     }
 }

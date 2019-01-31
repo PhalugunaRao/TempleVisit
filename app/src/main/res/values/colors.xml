@@ -43,12 +43,14 @@
     <color name="graph_fill_color">#508ef4</color>
     <color name="blue_color">#2168F3</color>
 
+    <color name="text_color">#8250EF</color>
+
     <!--<color name="blue">#ff59a9ff</color>-->
     <color name="blue">#317af2</color>
     <color name="bottom_background_color">#ffc4c2bc</color>
     <color name="transparent">#00000000</color>
 
-    <color name="card_main">#333333</color>
+    <color name="card_main">#343434</color>
     <color name="card_first">#555555</color>
     <color name="card_second">#757575</color>
     <color name="card_third">#ababab</color>

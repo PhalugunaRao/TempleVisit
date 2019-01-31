@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.temples.R;
 import com.temples.dashboard.DashboardActivity;
 import com.temples.dashboard.MainActivity;
+import com.temples.details.TempleDetailsPage;
 import com.temples.network.NetworkHandlerController;
 import com.temples.utils.UrlData;
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         initView();
         editTextRegisterUserNameLogic();
@@ -48,7 +51,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         signupLable.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                Intent intent = new Intent(LoginActivity.this, TempleDetailsPage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }

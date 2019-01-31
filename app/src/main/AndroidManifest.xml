@@ -29,6 +29,7 @@
         <activity android:name=".login.RegisterActivity"></activity>
         <activity android:name="com.temples.dashboard.DashboardActivity"></activity>
         <activity android:name=".dashboard.MainActivity"></activity>
+        <activity android:name=".details.TempleDetailsPage"></activity>
     </application>
 
 </manifest>

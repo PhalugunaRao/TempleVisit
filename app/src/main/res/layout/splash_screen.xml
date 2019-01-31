@@ -64,24 +64,26 @@
                 <LinearLayout
                     android:id="@+id/skipButton_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center|right"
                     android:orientation="horizontal"
                     android:visibility="visible">
 
-                    <TextView
+                    <com.temples.utils.ProximaNovaTextView
                         android:id="@+id/skipButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:text="SKIP"
+                        android:text="Skip"
                         android:textColor="#a2a2a2"
                         android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular"
                         />
 
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
+                        android:visibility="gone"
                         android:background="@drawable/ic_arrow_forward_black_24px"
                         android:scaleType="fitXY" />
 
@@ -96,15 +98,16 @@
                     android:orientation="horizontal"
                     android:visibility="gone">
 
-                    <TextView
+                    <com.temples.utils.ProximaNovaTextView
                         android:id="@+id/get_started_Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center|right"
                         android:text="Done"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/text_color"
                         android:textSize="@dimen/textsize_16"
+
                          />
 
                     <ImageView
@@ -112,6 +115,7 @@
                         android:layout_height="@dimen/margin_20"
                         android:background="@drawable/ic_arrow_forward_black_24px"
                         android:backgroundTint="@color/colorPrimary"
+                        android:visibility="gone"
                         android:scaleType="fitXY" />
 
 
@@ -127,7 +131,7 @@
         android:id="@+id/before_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_splash"
+        android:background="@drawable/app_bg_all"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -151,36 +155,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/loading_text_lable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/horizontal_progress_bar"
-                android:layout_alignParentLeft="true"
-                android:gravity="center"
-                android:text="Loading..."
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_14"
-                />
-
-            <ProgressBar
-                android:id="@+id/horizontal_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:max="100"
-                android:progress="40"
-                android:progressBackgroundTint="#59b5ff"
-                android:progressTint="#f2ca5c" />
-        </LinearLayout>
 
 
     </LinearLayout>

@@ -7,6 +7,7 @@ public class UrlData {
 
     //public static String TEMPLE_DETAILS ="http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlaceDetails/1";
 
-    public static String TEMPLE_DETAILS ="http://www.json-generator.com/api/json/get/cgpFxakUVu?indent=2";
+    public static String TEMPLE_DETAILS ="http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlaceDetails/";
+    public static String PLACES_LIST= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlacesList";
 
 }

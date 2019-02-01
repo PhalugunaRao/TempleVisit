@@ -9,21 +9,21 @@
     android:addStatesFromChildren="true"
     card_view:cardBackgroundColor="@color/card_background_first"
     android:clickable="true"
-    card_view:cardCornerRadius="6dp"
+    card_view:cardCornerRadius="3dp"
     card_view:contentPadding="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center|left"
-        android:layout_margin="@dimen/margin_16"
+        android:padding="@dimen/margin_16"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView
+            <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/package_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,10 +31,11 @@
                 android:gravity="center|left"
                 android:maxLines="1"
                 android:text="Visitors"
-                android:textColor="@color/card_first"
-                android:textSize="@dimen/textsize_16"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14"
+                fab:typeface="proxima_regular"
                 />
-            <TextView
+            <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/package_include_tax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,11 +43,12 @@
                 android:gravity="center|left"
                 android:maxLines="1"
                 android:text="Visitors"
-                android:textColor="@color/card_first"
-                android:textSize="@dimen/textsize_16"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_10"
+                fab:typeface="proxima_regular"
                 />
         </LinearLayout>
-        <TextView
+        <com.temples.utils.ProximaNovaTextView
             android:id="@+id/package_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,8 +56,9 @@
             android:gravity="center|left"
             android:maxLines="1"
             android:text="Visitors"
-            android:textColor="@color/card_first"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_16"
+            fab:typeface="proxima_regular"
             />
         <ImageView
             android:layout_width="@dimen/margin_25"

@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         signupLable.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, TempleDetailsPage.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         textInputLayoutPasswordNumber =  findViewById(R.id.floating_user_password);
         editTextRegisterName = findViewById(R.id.edit_text_register_user_name);
         editTextRegisterPasssword =  findViewById(R.id.edit_text_user_password);
-        signupLable=findViewById(R.id.instruction_button);
+        signupLable=findViewById(R.id.sign_up_button);
         siginLable=findViewById(R.id.button_next_register);
     }
 

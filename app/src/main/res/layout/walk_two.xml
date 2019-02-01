@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:gravity="center|top"
     android:orientation="vertical">
-    <TextView
+    <com.temples.utils.ProximaNovaTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -14,8 +14,8 @@
         android:gravity="center"
         android:text="Great Culture"
         android:textColor="@color/card_main"
-        android:textSize="@dimen/textsize_25"
-        android:textStyle="bold"
+        android:textSize="@dimen/textsize_30"
+        fab:typeface="proxima_bold"
         />
 
 

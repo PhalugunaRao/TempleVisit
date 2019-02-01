@@ -4,181 +4,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:gravity="top"
     android:orientation="vertical">
-
-
-
-
-
-    <RelativeLayout
-        android:id="@+id/register_container"
+    <com.temples.utils.ProximaNovaTextView
+        android:id="@+id/back_lable"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="visible">
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:gravity="center|left"
+        android:layout_marginTop="@dimen/margin_25"
+        android:text="Back"
+        android:paddingTop="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_10"
+        android:textColor="@color/card_first"
+        android:textSize="@dimen/textsize_12"
+        app:typeface="proxima_regular"
+        />
+    <com.temples.utils.ProximaNovaTextView
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:gravity="center|left"
+        android:layout_marginTop="@dimen/margin_25"
+        android:text="Sign Up"
+        android:textColor="@color/card_first"
+        android:textSize="@dimen/textsize_25"
+        app:typeface="proxima_regular"
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_20"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:visibility="visible">
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/floating_text_register_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:theme="@style/txt_login_style"
+        app:errorTextAppearance="@style/error_appearance_login">
 
-
-
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/floating_text_register_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_8"
-                android:layout_marginRight="@dimen/margin_24"
-                android:theme="@style/txt_login_style"
-                app:errorTextAppearance="@style/error_appearance_login">
-
-                <EditText
-                    android:id="@+id/edit_text_register_user_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Name*"
-                    android:importantForAutofill="noExcludeDescendants"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@color/card_first"
-                    android:textColorHint="@color/cement_color"
-                    android:textCursorDrawable="@null"
-                    android:textIsSelectable="false"
-                    android:textSize="@dimen/textsize_16" />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/floating_email_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_24"
-                android:layout_marginRight="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_25"
-
-                android:theme="@style/txt_login_style"
-                app:errorTextAppearance="@style/error_appearance_login">
-
-                <EditText
-                    android:id="@+id/edit_text_email_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableTint="#d8d8d8"
-                    android:hint="Email*"
-                    android:importantForAutofill="noExcludeDescendants"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColor="@color/card_first"
-                    android:textColorHint="@color/cement_color"
-                    android:textCursorDrawable="@null"
-                    android:textIsSelectable="false"
-                    android:textSize="@dimen/textsize_16" />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/floating_mobile_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_24"
-                android:layout_marginRight="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_25"
-                android:theme="@style/txt_login_style"
-                app:errorTextAppearance="@style/error_appearance_login">
-
-                <EditText
-                    android:id="@+id/edit_text_mobile_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableTint="#d8d8d8"
-                    android:hint="Mobile Number*"
-                    android:importantForAutofill="noExcludeDescendants"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:textColor="@color/card_first"
-                    android:textColorHint="@color/cement_color"
-                    android:textCursorDrawable="@null"
-                    android:textIsSelectable="false"
-                    android:textSize="@dimen/textsize_16" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/floating_user_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_24"
-                android:layout_marginRight="@dimen/margin_24"
-                android:theme="@style/txt_login_style"
-                android:layout_marginTop="@dimen/margin_25"
-                app:errorTextAppearance="@style/error_appearance_login">
-
-                <EditText
-                    android:id="@+id/edit_text_user_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_password_visibility"
-                    android:drawableTint="#d8d8d8"
-                    android:hint="Password*"
-                    android:importantForAutofill="noExcludeDescendants"
-                    android:inputType="textPassword|textNoSuggestions"
-                    android:maxLines="1"
-                    android:textColor="@color/card_first"
-                    android:textColorHint="@color/cement_color"
-                    android:textCursorDrawable="@null"
-                    android:textIsSelectable="false"
-                    android:textSize="@dimen/textsize_16" />
-            </android.support.design.widget.TextInputLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/edit_text_register_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/margin_30"
-            android:background="@color/white"
-            android:minHeight="?attr/actionBarSize"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:hint="Name*"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/card_first"
+            android:textColorHint="@color/cement_color"
+            android:textCursorDrawable="@null"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/textsize_16" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/floating_email_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_8"
+        android:theme="@style/txt_login_style"
+        app:errorTextAppearance="@style/error_appearance_login">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="@dimen/margin_8"
-                android:textColor="@color/card_second"
-                android:textSize="@dimen/textsize_12"
-                 />
+        <EditText
+            android:id="@+id/edit_text_email_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTint="#d8d8d8"
+            android:hint="Email*"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/card_first"
+            android:textColorHint="@color/cement_color"
+            android:textCursorDrawable="@null"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/textsize_16" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/floating_mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:theme="@style/txt_login_style"
+        android:layout_marginTop="@dimen/margin_8"
+        app:errorTextAppearance="@style/error_appearance_login">
 
-            <TextView
-                android:id="@+id/button_next_register"
-                style="@style/loginButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/margin_24"
-                android:layout_marginRight="@dimen/margin_24"
-                android:background="@drawable/rounded_rectangle_one"
-                android:gravity="center"
-                android:padding="@dimen/margin_10"
-                android:text="SignUp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/heading2"
-               />
+        <EditText
+            android:id="@+id/edit_text_mobile_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTint="#d8d8d8"
+            android:hint="Mobile Number*"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:textColor="@color/card_first"
+            android:textColorHint="@color/cement_color"
+            android:textCursorDrawable="@null"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/textsize_16" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/floating_user_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:theme="@style/txt_login_style"
+        android:layout_marginTop="@dimen/margin_8"
+        app:errorTextAppearance="@style/error_appearance_login">
 
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
+        <EditText
+            android:id="@+id/edit_text_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_password_visibility"
+            android:drawableTint="#d8d8d8"
+            android:hint="Password*"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="textPassword|textNoSuggestions"
+            android:maxLines="1"
+            android:textColor="@color/card_first"
+            android:textColorHint="@color/cement_color"
+            android:textCursorDrawable="@null"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/textsize_16" />
+    </android.support.design.widget.TextInputLayout>
+    <com.temples.utils.ProximaNovaTextView
+        android:id="@+id/button_next_register"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:background="@drawable/rounded_rectangle_one"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_40"
+        android:padding="@dimen/margin_16"
+        android:text="Sign Up"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18"
+        app:typeface="proxima_bold"
+        />
 
 </LinearLayout>

@@ -12,7 +12,7 @@ public class TempleDetailsData implements Parcelable{
     private String numberOfRatings;
     private String openingHours;
     private String placeName;
-    private String rating;
+    private double rating;
     private String visitedCount;
     private String visitingPlaceId;
 
@@ -23,7 +23,7 @@ public class TempleDetailsData implements Parcelable{
         numberOfRatings = in.readString();
         openingHours = in.readString();
         placeName = in.readString();
-        rating = in.readString();
+        rating = in.readDouble();
         visitedCount = in.readString();
         visitingPlaceId = in.readString();
     }
@@ -53,7 +53,7 @@ public class TempleDetailsData implements Parcelable{
         dest.writeString(numberOfRatings);
         dest.writeString(openingHours);
         dest.writeString(placeName);
-        dest.writeString(rating);
+        dest.writeDouble(rating);
         dest.writeString(visitedCount);
         dest.writeString(visitingPlaceId);
     }
@@ -106,11 +106,11 @@ public class TempleDetailsData implements Parcelable{
         this.placeName = placeName;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

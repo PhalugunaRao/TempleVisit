@@ -7,10 +7,10 @@ import java.util.List;
 
 public class ParkModel  implements Parcelable {
 
-    private List<TempleListData> objTempleEntityList;
+    private List<TempleListData> objVisitingPlacesInfoList;
 
     protected ParkModel(Parcel in) {
-        objTempleEntityList = in.createTypedArrayList(TempleListData.CREATOR);
+        objVisitingPlacesInfoList = in.createTypedArrayList(TempleListData.CREATOR);
     }
 
     public static final Creator<ParkModel> CREATOR = new Creator<ParkModel>() {
@@ -32,28 +32,36 @@ public class ParkModel  implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(objTempleEntityList);
+        dest.writeTypedList(objVisitingPlacesInfoList);
     }
 
-    public List<TempleListData> getObjTempleEntityList() {
-        return objTempleEntityList;
+    public List<TempleListData> getObjVisitingPlacesInfoList() {
+        return objVisitingPlacesInfoList;
     }
 
-    public void setObjTempleEntityList(List<TempleListData> objTempleEntityList) {
-        this.objTempleEntityList = objTempleEntityList;
+    public void setObjVisitingPlacesInfoList(List<TempleListData> objVisitingPlacesInfoList) {
+        this.objVisitingPlacesInfoList = objVisitingPlacesInfoList;
     }
 
     public static class TempleListData  implements Parcelable{
-        private String templeImage;
-        private String templeId;
-        private String templeName;
-        private String aboutTemple;
+
+
+
+        private String placeImage;
+        private String placeName;
+        private String visitingPlaceId;
+        private double rating;
+        private String visitedCount;
+        private  String numberOfRatings;
+
 
         protected TempleListData(Parcel in) {
-            templeImage = in.readString();
-            templeId = in.readString();
-            templeName = in.readString();
-            aboutTemple = in.readString();
+            placeImage = in.readString();
+            placeName = in.readString();
+            visitingPlaceId = in.readString();
+            rating = in.readDouble();
+            visitedCount = in.readString();
+            numberOfRatings = in.readString();
         }
 
         public static final Creator<TempleListData> CREATOR = new Creator<TempleListData>() {
@@ -75,42 +83,60 @@ public class ParkModel  implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(templeImage);
-            dest.writeString(templeId);
-            dest.writeString(templeName);
-            dest.writeString(aboutTemple);
+            dest.writeString(placeImage);
+            dest.writeString(placeName);
+            dest.writeString(visitingPlaceId);
+            dest.writeDouble(rating);
+            dest.writeString(visitedCount);
+            dest.writeString(numberOfRatings);
         }
 
-        public String getTempleImage() {
-            return templeImage;
+        public String getPlaceImage() {
+            return placeImage;
         }
 
-        public void setTempleImage(String templeImage) {
-            this.templeImage = templeImage;
+        public void setPlaceImage(String placeImage) {
+            this.placeImage = placeImage;
         }
 
-        public String getTempleId() {
-            return templeId;
+        public String getPlaceName() {
+            return placeName;
         }
 
-        public void setTempleId(String templeId) {
-            this.templeId = templeId;
+        public void setPlaceName(String placeName) {
+            this.placeName = placeName;
         }
 
-        public String getTempleName() {
-            return templeName;
+        public String getVisitingPlaceId() {
+            return visitingPlaceId;
         }
 
-        public void setTempleName(String templeName) {
-            this.templeName = templeName;
+        public void setVisitingPlaceId(String visitingPlaceId) {
+            this.visitingPlaceId = visitingPlaceId;
         }
 
-        public String getAboutTemple() {
-            return aboutTemple;
+        public double getRating() {
+            return rating;
         }
 
-        public void setAboutTemple(String aboutTemple) {
-            this.aboutTemple = aboutTemple;
+        public void setRating(double rating) {
+            this.rating = rating;
+        }
+
+        public String getVisitedCount() {
+            return visitedCount;
+        }
+
+        public void setVisitedCount(String visitedCount) {
+            this.visitedCount = visitedCount;
+        }
+
+        public String getNumberOfRatings() {
+            return numberOfRatings;
+        }
+
+        public void setNumberOfRatings(String numberOfRatings) {
+            this.numberOfRatings = numberOfRatings;
         }
     }
 }

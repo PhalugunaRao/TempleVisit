@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -29,10 +30,18 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
     ViewPagerIndicator indicator;
     TempleDetailsData mTempleDetailsData;
     ViewPager pager;
+    Bundle bundle;
+    String visitingPlaceID;
+    RatingBar templeRating;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temple_details_page);
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            visitingPlaceID = bundle.getString("templeID", "");
+        }
+        System.out.println("TempleDetailsPage.onCreate=="+visitingPlaceID);
         initViews();
         Thread thread = new Thread(new GetTempleDetailsThread());
         thread.start();
@@ -45,6 +54,7 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
         ratingCount=findViewById(R.id.temple_detail_rating_count);
         viewMore=findViewById(R.id.temple_detail_view_more);
         templeExpandbleList=findViewById(R.id.temple_details_packages);
+        templeRating=findViewById(R.id.temple_detail_rating);
 
     }
     private class GetTempleDetailsThread implements Runnable {
@@ -56,7 +66,7 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
 
     private void getTempleDetails() {
 
-        String url = UrlData.TEMPLE_DETAILS;
+        String url = UrlData.TEMPLE_DETAILS+visitingPlaceID;
         NetworkHandlerController.getInstance().volleyGetRequestT(this, url,
                 this, "temple_details");
 
@@ -72,6 +82,7 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
 
                aboutTemple.setText(mTempleDetailsData.getAboutPlace());
                ratingCount.setText(mTempleDetailsData.getNumberOfRatings()+" "+"Ratings");
+               templeRating.setRating((float)mTempleDetailsData.getRating());
 
                if (mTempleDetailsData.getPlaceImage() != null) {
                    if (mTempleDetailsData.getPlaceImage().size() > 0) {

@@ -36,7 +36,7 @@
     <!-- 27AE60 -->
 
     <color name="colorleaderBoard">#d3dbe6</color>
-    <color name="colorPrimaryDark">#FFF</color>
+    <color name="colorPrimaryDark">#AA55FF</color>
     <color name="colorPrimary">#2168f3</color>
     <color name="login_page_background">#2196F3</color>
     <color name="ic_grey_color">#B9BEC6</color>

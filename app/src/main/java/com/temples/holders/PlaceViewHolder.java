@@ -6,27 +6,31 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.temples.R;
+import com.temples.details.TempleDetailsPage;
+import com.temples.login.LoginActivity;
+import com.temples.login.RegisterActivity;
 import com.temples.model.ParkModel;
 import com.temples.utils.PreferenceHelper;
 
 public class PlaceViewHolder extends BaseViewHolder {
-    TextView meventName, meventPriceTag, meventGoingTag;
-    TextView meventDayName, meventDayDate, meventDayMonth, eventDateFullFormat;
+    TextView mplacename, mVisitCount;
     TextView meventAddress;
-    ImageView eventImage;
-    CardView knowMoreEvent;
+    ImageView placeImage;
+    CardView mcardView;
+    RatingBar place_rating;
 
     public PlaceViewHolder(View itemView) {
         super(itemView);
-        meventName = itemView.findViewById(R.id.event_name);
-        meventAddress = itemView.findViewById(R.id.event_address);
-        eventImage = itemView.findViewById(R.id.event_image);
-        knowMoreEvent = itemView.findViewById(R.id.card_view);
-
+        mplacename = itemView.findViewById(R.id.place_name);
+        placeImage = itemView.findViewById(R.id.place_image);
+        mcardView = itemView.findViewById(R.id.card_view);
+        mVisitCount=itemView.findViewById(R.id.numer_of_visit);
+        place_rating=itemView.findViewById(R.id.place_rating);
 
     }
 
@@ -37,28 +41,28 @@ public class PlaceViewHolder extends BaseViewHolder {
                 final ParkModel.TempleListData internaleventdata = (ParkModel.TempleListData) object;
 
                 if (internaleventdata != null) {
-
-
-                    meventName.setText(internaleventdata.getTempleName());
-                    meventAddress.setText(internaleventdata.getAboutTemple());
-
-                    if (internaleventdata.getTempleImage() == null || internaleventdata.getTempleImage().isEmpty()) {
-
-                        eventImage.setVisibility(View.GONE);
+                    place_rating.setRating((float)internaleventdata.getRating());
+                    mVisitCount.setText(internaleventdata.getVisitedCount()+" "+"Visited");
+                    mplacename.setText(internaleventdata.getPlaceName());
+                    if (internaleventdata.getPlaceImage() == null || internaleventdata.getPlaceImage().isEmpty()) {
+                        placeImage.setVisibility(View.GONE);
                     } else {
-                        eventImage.setVisibility(View.VISIBLE);
+                        placeImage.setVisibility(View.VISIBLE);
                         try{
-                            Glide.with(context).load(internaleventdata.getTempleImage())
+                            Glide.with(context).load(internaleventdata.getPlaceImage())
                                     .placeholder(R.drawable.ic_bad_internet).error(R.drawable.ic_bad_internet)
-                                    .into(eventImage);
+                                    .into(placeImage);
                         }catch (Exception e){
 
                         }
                     }
-                    knowMoreEvent.setOnClickListener(new View.OnClickListener() {
+                    mcardView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            Intent intent = new Intent(context, TempleDetailsPage.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("templeID",internaleventdata.getVisitingPlaceId());
+                            context.startActivity(intent);
                         }
                     });
 

@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content">
                 <android.support.v4.view.ViewPager
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_150"
+                    android:layout_height="@dimen/margin_200"
                     android:id="@+id/pager"
                     />
                 <com.ravindu1024.indicatorlib.ViewPagerIndicator
@@ -31,19 +31,27 @@
                     app:indicatorSpacing="@dimen/margin_5"
                     />
             </FrameLayout>
-            <TextView
+            <com.temples.utils.ProximaNovaTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_22"
                 android:textColor="@color/card_first"
-                android:text="History"/>
-            <TextView
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:text="History"
+                app:typeface="proxima_regular"/>
+            <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/temple_detail_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_14"
-                android:textColor="@color/card_first"
-                android:text="History"/>
+                android:textSize="@dimen/textsize_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_10"
+                android:textColor="@color/card_second"
+                android:text="History"
+                app:typeface="proxima_regular"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +67,7 @@
                     android:progressTint="@color/progress_second"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <TextView
+                <com.temples.utils.ProximaNovaTextView
                     android:id="@+id/temple_detail_rating_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,18 +77,25 @@
                     android:text="124 Ratings"
                     android:textColor="@color/card_second"
                     android:textSize="@dimen/textsize_14"
+                    app:typeface="proxima_regular"
+
                     />
             </LinearLayout>
-            <TextView
+            <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/temple_detail_view_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center|left"
                 android:maxLines="1"
+                android:layout_marginLeft="@dimen/margin_16"
                 android:text="View More"
-                android:textColor="@color/colorPrimary"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                android:paddingRight="@dimen/margin_10"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/textsize_14"
+                app:typeface="proxima_bold"
                 />
             <com.temples.utils.ExpandableHeightListView
                 android:id="@+id/temple_details_packages"

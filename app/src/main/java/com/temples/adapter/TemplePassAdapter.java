@@ -55,11 +55,17 @@ public class TemplePassAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         try {
-            holder.package_name.setText("Package-"+" "+position);
+            holder.package_name.setText("Package -"+" "+String.valueOf(position+1));
             holder.package_include_tax.setText("Including Tax");
-            holder.package_price.setText(data.get(position).getFeeAmount());
-            if(position==0){
+            holder.package_price.setText("$"+" "+data.get(position).getFeeAmount());
+            if(data.get(position).getColor().equalsIgnoreCase("orange")){
+                holder.card_view.setBackgroundResource(R.drawable.package_one_bg);
+            }else  if(data.get(position).getColor().equalsIgnoreCase("blue")){
+                holder.card_view.setBackgroundResource(R.drawable.package_two_bg);
+            }else  if(data.get(position).getColor().equalsIgnoreCase("red")){
                 holder.card_view.setBackgroundResource(R.drawable.package_three_bg);
+            }else{
+                holder.card_view.setBackgroundResource(R.drawable.package_one_bg);
             }
 
         } catch (NullPointerException e) {

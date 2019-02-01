@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.temples.R;
+import com.temples.dashboard.MainActivity;
 import com.temples.network.NetworkHandlerController;
 import com.temples.utils.PreferenceHelper;
 import com.temples.utils.UrlData;
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements NetworkHandle
     EditText editTextRegisterPasssword;
     EditText editTextMobileNumber;
     EditText editTextEmailID;
-    private TextView textViewRegister, button_register;
+    private TextView textViewRegister, button_register,backlable;
     PreferenceHelper prefs;
 
 
@@ -59,6 +60,14 @@ public class RegisterActivity extends AppCompatActivity implements NetworkHandle
             public void onClick(View v) {
 
                 regesterValidation();
+            }
+        });
+        backlable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
     }
@@ -106,6 +115,8 @@ public class RegisterActivity extends AppCompatActivity implements NetworkHandle
         editTextRegisterPasssword =  findViewById(R.id.edit_text_user_password);
         editTextMobileNumber =  findViewById(R.id.edit_text_mobile_number);
         editTextEmailID=findViewById(R.id.edit_text_email_id);
+        backlable=findViewById(R.id.back_lable);
+
     }
 
     private void editTextRegisterUserNameLogic() {

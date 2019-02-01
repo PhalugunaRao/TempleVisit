@@ -26,6 +26,7 @@ import com.temples.network.NetworkHandlerController;
 import com.temples.utils.NetworkCaller;
 import com.temples.utils.NoDataFoundCommonModel;
 import com.temples.utils.PreferenceHelper;
+import com.temples.utils.UrlData;
 
 import org.json.JSONObject;
 
@@ -135,7 +136,9 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
 
     public void registerEventDetails() {
         isLoaded = true;
-        if (NetworkHandlerController.getInstance().isInternetOncheck(getContext())) {
+        backgoundgthreadStoreData();
+        isNoInternetViewDisplaing = false;
+        /*if (NetworkHandlerController.getInstance().isInternetOncheck(getContext())) {
             backgoundgthreadStoreData();
             isNoInternetViewDisplaing = false;
         } else {
@@ -150,22 +153,22 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
                     recyclerView.hideShimmerAdapter();
                 }
             });
-        }
+        }*/
     }
 
 
     private void displayView() {
         isLoaded = true;
-        if (mParkModel != null && mParkModel.getObjTempleEntityList() != null) {
+        if (mParkModel != null && mParkModel.getObjVisitingPlacesInfoList() != null) {
             adapter.clearData();
             try {
-                if (mParkModel.getObjTempleEntityList().size() == 0) {
+                if (mParkModel.getObjVisitingPlacesInfoList().size() == 0) {
                     isNoInternetViewDisplaing = false;
                     adapter.add(adapter.getItemCount(), new NoDataFoundCommonModel("No Registered Events", getString(R.string.no_my_event_title_empty), R.drawable.ic_bad_internet, "",""));
                     recyclerView.hideShimmerAdapter();
                 } else {
-                    for (int i = 0; i < mParkModel.getObjTempleEntityList().size(); i++) {
-                        adapter.add(adapter.getItemCount(), mParkModel.getObjTempleEntityList().get(i));
+                    for (int i = 0; i < mParkModel.getObjVisitingPlacesInfoList().size(); i++) {
+                        adapter.add(adapter.getItemCount(), mParkModel.getObjVisitingPlacesInfoList().get(i));
                     }
                     isNoInternetViewDisplaing = false;
                     recyclerView.hideShimmerAdapter();
@@ -186,7 +189,7 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
     }
 
     private void backgoundgthreadStoreData() {
-        url = "http://www.json-generator.com/api/json/get/bVshQhYhcO?indent=2";
+        url =UrlData.PLACES_LIST;
         /*HashMap<String, String> customHeaders = NetworkHandlerController.getInstance().getCustomHeaders(false,
                 context, prefs, customerManager, "");*/
         NetworkHandlerController.getInstance().volleyGetRequestT(context, url,

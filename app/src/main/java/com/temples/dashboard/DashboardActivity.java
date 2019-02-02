@@ -1,5 +1,6 @@
 package com.temples.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.temples.R;
@@ -21,6 +23,7 @@ public class DashboardActivity extends AppCompatActivity {
     private Fragment currentFragment;
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
+    ImageView homeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,21 @@ public class DashboardActivity extends AppCompatActivity {
         currentFragment = adapter.getItem(0);
 
         setupTabView();
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
 
 
     private void initializeView() {
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
+        homeButton=findViewById(R.id.home_button);
     }
 
     private void setupViewPager() {

@@ -30,6 +30,8 @@
         <activity android:name="com.temples.dashboard.DashboardActivity"></activity>
         <activity android:name=".dashboard.MainActivity"></activity>
         <activity android:name=".details.TempleDetailsPage"></activity>
+        <activity android:name=".details.PackageDetailsActivity"></activity>
+        <activity android:name=".profile.ProfileActivity"></activity>
     </application>
 
 </manifest>

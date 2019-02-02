@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8"
+                android:addStatesFromChildren="true"
+                card_view:cardBackgroundColor="@color/card_background_first"
+                android:clickable="true"
+                card_view:cardCornerRadius="6dp"
+                card_view:contentPadding="0dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/white"
+                    android:padding="@dimen/margin_10"
+                    android:orientation="vertical">
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:text="About Package"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_20"
+                        android:padding="@dimen/margin_10"
+                        fab:typeface="proxima_regular"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/card_first"></View>
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="Name of the Place :"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular"
+                        />
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/place_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/margin_10"
+                        android:textColor="@color/card_first"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular"
+                        />
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:text="Address :"
+                        android:paddingLeft="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular"
+                        />
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/package_details_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="2"
+                        android:padding="@dimen/margin_10"
+                        android:textColor="@color/card_first"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular"
+                        />
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/package_details_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:padding="@dimen/margin_10"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular"
+                        />
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/package_validate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:padding="@dimen/margin_10"
+                        android:textColor="@color/green"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_bold"
+                        />
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8"
+                android:addStatesFromChildren="true"
+                card_view:cardBackgroundColor="@color/card_background_first"
+                android:clickable="true"
+                card_view:cardCornerRadius="6dp"
+                card_view:contentPadding="0dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/white"
+                    android:padding="@dimen/margin_10"
+                    android:orientation="vertical">
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:text="Traveller information"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_20"
+                        android:padding="@dimen/margin_10"
+                        fab:typeface="proxima_regular"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/card_first"></View>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/package_passenger_name_float"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_package_passenger_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Passenger Name"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/edit_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Select Date"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:maxLines="1"
+                        android:paddingTop="@dimen/margin_8"
+                        android:paddingBottom="@dimen/margin_8"
+                        android:textColor="@color/card_first"
+                        android:textColorHint="@color/cement_color"
+                        android:textCursorDrawable="@null"
+                        android:textIsSelectable="false"
+                        android:textSize="@dimen/textsize_16" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:background="@color/card_first"></View>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/floating_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Mobile No"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/floating_emial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/floating_person"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_perosn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Number of persons "
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+
+            <LinearLayout
+                android:id="@+id/homeCollectionCheckLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="#f4f4f4"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_16"
+                android:paddingTop="@dimen/margin_14"
+                android:paddingRight="@dimen/margin_16"
+                android:paddingBottom="@dimen/margin_14"
+                android:visibility="visible">
+
+                <CheckBox
+                    android:id="@+id/home_collection_check_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:padding="@dimen/margin_3"
+                        android:text="Home Delivery"
+                        android:textColor="@color/card_main"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_bold" />
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/aditional_home_charge"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:text="$ 10 extra charge"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textColor="@color/card_second"
+                        android:textSize="@dimen/textsize_14"
+                        fab:typeface="proxima_bold" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/home_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8"
+                android:addStatesFromChildren="true"
+                card_view:cardBackgroundColor="@color/card_background_first"
+                android:clickable="true"
+                android:visibility="gone"
+                card_view:cardCornerRadius="6dp"
+                card_view:contentPadding="0dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/white"
+                    android:padding="@dimen/margin_10"
+                    android:orientation="vertical">
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:text="Home Address"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_20"
+                        android:padding="@dimen/margin_10"
+                        fab:typeface="proxima_regular"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/card_first"></View>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/floating_house"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_house"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="House No"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/floating_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Address"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/floating_pin_cod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:theme="@style/txt_login_style"
+                        fab:errorTextAppearance="@style/error_appearance_login">
+
+                        <EditText
+                            android:id="@+id/edit_pin_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="PinCode"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/card_first"
+                            android:textColorHint="@color/cement_color"
+                            android:textCursorDrawable="@null"
+                            android:textIsSelectable="false"
+                            android:textSize="@dimen/textsize_16" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+            <com.temples.utils.ProximaNovaTextView
+                android:id="@+id/proceed_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginRight="@dimen/margin_30"
+                android:background="@drawable/proceed_to_pay"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_50"
+                android:text="Proceed to pay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_18"
+                android:layout_marginBottom="@dimen/margin_40"
+                android:elevation="@dimen/margin_10"
+                fab:typeface="proxima_bold"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

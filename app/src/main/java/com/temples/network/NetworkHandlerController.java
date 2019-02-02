@@ -233,8 +233,8 @@ public class NetworkHandlerController {
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 Map<String, String> headers = response.headers;
                 Set<String> keySet = headers.keySet();
-                prefs.setEkinKey(headers.get("X-EKINCARE-KEY"));
-                prefs.setCustomerKey(headers.get("X-CUSTOMER-KEY"));
+                //prefs.setEkinKey(headers.get("X-EKINCARE-KEY"));
+                //prefs.setCustomerKey(headers.get("X-CUSTOMER-KEY"));
 
 
                 return super.parseNetworkResponse(response);

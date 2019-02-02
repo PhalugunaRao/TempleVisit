@@ -20,6 +20,9 @@ import android.widget.TextView;
 
 import com.temples.R;
 import com.temples.adapter.SplashAdapter;
+import com.temples.dashboard.MainActivity;
+import com.temples.details.PackageDetailsActivity;
+import com.temples.utils.PreferenceHelper;
 
 import org.json.JSONObject;
 
@@ -33,7 +36,7 @@ public class SplashScreenActivity extends FragmentActivity {
     TextView skipButton, getStartedButton;
     LinearLayout skpiView;
     LinearLayout getStartedView;
-   // private PreferenceHelper prefs;
+    private PreferenceHelper prefs;
     LinearLayout beforeView;
 
     String type = "";
@@ -51,7 +54,7 @@ public class SplashScreenActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_screen);
-        //prefs = new PreferenceHelper(this);
+        prefs = new PreferenceHelper(this);
         try {
             Bundle extras = getIntent().getExtras();
             type = extras.getString("type");
@@ -76,55 +79,7 @@ public class SplashScreenActivity extends FragmentActivity {
 
             public void onFinish() {
 
-                beforeView.setVisibility(View.GONE);
-                mAdapter = new SplashAdapter(getSupportFragmentManager());
-                mPager = findViewById(R.id.pager);
-                mPager.setAdapter(mAdapter);
-                mPager.setOffscreenPageLimit(1);
-
-                mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-
-                        switch (position) {
-                            case 0:
-                                skpiView.setVisibility(View.VISIBLE);
-                                getStartedView.setVisibility(View.GONE);
-                                circleOne.setBackgroundResource(R.drawable.black_circle);
-                                circleTwo.setBackgroundResource(R.drawable.white_circle);
-                                circleThree.setBackgroundResource(R.drawable.white_circle);
-                                break;
-                            case 1:
-                                skpiView.setVisibility(View.VISIBLE);
-                                getStartedView.setVisibility(View.GONE);
-                                circleOne.setBackgroundResource(R.drawable.white_circle);
-                                circleTwo.setBackgroundResource(R.drawable.black_circle);
-                                circleThree.setBackgroundResource(R.drawable.white_circle);
-                                break;
-                            case 2:
-                                skpiView.setVisibility(View.GONE);
-                                getStartedView.setVisibility(View.VISIBLE);
-                                circleOne.setBackgroundResource(R.drawable.white_circle);
-                                circleTwo.setBackgroundResource(R.drawable.white_circle);
-                                circleThree.setBackgroundResource(R.drawable.black_circle);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                });
-
-               /* if (!prefs.getIsLogin()) {
+                if(!prefs.getIsLogin()){
                     beforeView.setVisibility(View.GONE);
                     mAdapter = new SplashAdapter(getSupportFragmentManager());
                     mPager = findViewById(R.id.pager);
@@ -172,16 +127,12 @@ public class SplashScreenActivity extends FragmentActivity {
 
                         }
                     });
-                } else {
-                   *//* Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                }else{
+                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();*//*
-
-
-
-
-                }*/
+                    finish();
+                }
             }
         }.start();
 

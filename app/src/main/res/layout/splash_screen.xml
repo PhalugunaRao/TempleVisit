@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="@dimen/margin_16"
-                android:background="@mipmap/ic_launcher" />
+                android:background="@drawable/aeroplane" />
 
 
 

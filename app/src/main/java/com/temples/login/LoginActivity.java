@@ -16,11 +16,15 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.temples.R;
 import com.temples.dashboard.DashboardActivity;
 import com.temples.dashboard.MainActivity;
+import com.temples.details.PackageDetailsActivity;
 import com.temples.details.TempleDetailsPage;
+import com.temples.model.LoginModel;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.PreferenceHelper;
 import com.temples.utils.UrlData;
 
 import org.json.JSONException;
@@ -38,12 +42,15 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
 
     EditText editTextRegisterName;
     EditText editTextRegisterPasssword;
+    LoginModel mLoginModel;
+    PreferenceHelper prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+        prefs = new PreferenceHelper(this);
         initView();
         editTextRegisterUserNameLogic();
         editTextRegisterPasswordLogic();
@@ -51,7 +58,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         signupLable.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, PackageDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -105,7 +112,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         editTextRegisterName = findViewById(R.id.edit_text_register_user_name);
         editTextRegisterPasssword =  findViewById(R.id.edit_text_user_password);
         signupLable=findViewById(R.id.sign_up_button);
-        siginLable=findViewById(R.id.button_next_register);
+        siginLable=findViewById(R.id.button_logon);
     }
 
     private void editTextRegisterUserNameLogic() {
@@ -161,12 +168,20 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         if(isSuccess){
             System.out.println("LoginActivity.onResult==="+resultObject.toString());
             if(resultObject!=null){
+                mLoginModel = new Gson().fromJson(resultObject.toString(), LoginModel.class);
+
+
                 try {
                     String statusCode=resultObject.getString("statusCode");
                     String statusMessage=resultObject.getString("statusMessage");
                     System.out.println("RegisterActivity.onResult==="+statusCode);
                     switch (statusCode){
                         case "4":
+                            prefs.setAppToken(mLoginModel.getTokenId());
+                            prefs.setIsLogin(true);
+                            prefs.setFullName(mLoginModel.getFullName());
+                            prefs.setEmail(mLoginModel.getEmailId());
+                            prefs.setMobile(mLoginModel.getMobileNumber());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

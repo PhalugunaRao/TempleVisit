@@ -10,4 +10,6 @@ public class UrlData {
     public static String TEMPLE_DETAILS ="http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlaceDetails/";
     public static String PLACES_LIST= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlacesList";
 
+    public static String PACKAGE_DETAIL= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPassDetails/1";
+
 }

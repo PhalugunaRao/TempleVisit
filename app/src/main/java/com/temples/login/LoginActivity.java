@@ -24,6 +24,7 @@ import com.temples.details.PackageDetailsActivity;
 import com.temples.details.TempleDetailsPage;
 import com.temples.model.LoginModel;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.CustomCircularProgress;
 import com.temples.utils.PreferenceHelper;
 import com.temples.utils.UrlData;
 
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         signupLable.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, PackageDetailsActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -69,6 +70,18 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
                loginValidation();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dismissDialog();
     }
 
     private void loginValidation() {
@@ -98,6 +111,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
     }
 
     private void loginVolleyRequest(JSONObject object) {
+        CustomCircularProgress.getInstance().show(this);
         String URL = UrlData.LOGIN_URL;
        /* HashMap<String, String> customHeaders = NetworkHandlerController.getInstance().getCustomHeaders(false,
                 this, prefs,  "");*/
@@ -162,9 +176,14 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
         });
     }
 
+    void dismissDialog() {
+        if (!isFinishing() && CustomCircularProgress.getInstance() != null)
+            CustomCircularProgress.getInstance().dismiss();
+    }
 
     @Override
     public void onResult(boolean isSuccess, JSONObject resultObject, VolleyError volleyError, ProgressDialog progressDialog, String from) {
+        dismissDialog();
         if(isSuccess){
             System.out.println("LoginActivity.onResult==="+resultObject.toString());
             if(resultObject!=null){
@@ -185,6 +204,7 @@ public class LoginActivity extends AppCompatActivity  implements NetworkHandlerC
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
+                            finish();
                             break;
                         case  "1":
                         case  "2":

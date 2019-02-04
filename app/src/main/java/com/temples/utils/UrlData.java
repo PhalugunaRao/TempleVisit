@@ -10,6 +10,11 @@ public class UrlData {
     public static String TEMPLE_DETAILS ="http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlaceDetails/";
     public static String PLACES_LIST= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPlacesList";
 
-    public static String PACKAGE_DETAIL= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPassDetails/1";
+    public static String PACKAGE_DETAIL= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetVisitingPassDetails/";
+
+    public static String PROCEED_PAYMENT= "http://ticketingapp.nhealth.in/TicketBooking.svc/SaveBookingInformation";
+
+    public static String BOOKING_INFO=" http://ticketingapp.nhealth.in/TicketBooking.svc/GetPassBookingInfo/";
+    public static String HISTORY_LIST= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetBookingPassHistory/";
 
 }

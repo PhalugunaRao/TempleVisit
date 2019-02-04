@@ -9,6 +9,8 @@ public class ParkModel  implements Parcelable {
 
     private List<TempleListData> objVisitingPlacesInfoList;
 
+
+
     protected ParkModel(Parcel in) {
         objVisitingPlacesInfoList = in.createTypedArrayList(TempleListData.CREATOR);
     }

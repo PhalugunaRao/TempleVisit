@@ -11,7 +11,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center|left"
         android:theme="@style/AppTheme.Base">
 
@@ -25,14 +25,13 @@
             app:elevation="0dp"
             app:contentInsetStartWithNavigation="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:theme="@style/ToolbarColoredBackArrow"
+            app:theme="@style/ThemeOverlay.AppCompat"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             fab:title="ekincare">
             <LinearLayout
                 android:id="@+id/layout_filter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin_16"
                 >
 
                 <TextView
@@ -42,7 +41,7 @@
                     android:layout_weight="0.5"
                     android:gravity="left|center"
                     android:singleLine="true"
-                    android:textColor="@color/card_main"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/margin_24"
                      />
 
@@ -53,7 +52,8 @@
                     android:layout_height="@dimen/margin_22"
                     android:background="@mipmap/ic_launcher"
                     android:padding="@dimen/margin_8"
-                    android:visibility="visible" />
+                    android:visibility="gone"
+                     />
 
             </LinearLayout>
         </android.support.v7.widget.Toolbar>

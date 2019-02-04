@@ -24,16 +24,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setContentView(R.layout.mainactivity_layout);
         prefs = new PreferenceHelper(this);
-        System.out.println("MainActivity.onCreate==="+prefs.getAppToken()+prefs.getEmail()+prefs.getMobile()+prefs.getIsLogin());
         initializeView();
+        user_name_lable.setText(prefs.getFullName());
 
         list_of_place_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                intent.putExtra("pageStatus","places");
                 startActivity(intent);
             }
         });
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                intent.putExtra("pageStatus","mybookings");
                 startActivity(intent);
             }
         });
@@ -50,6 +52,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        other_views.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                intent.putExtra("pageStatus","Others");
+                startActivity(intent);
+            }
+        });
+        userProfileIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });

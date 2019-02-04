@@ -1,0 +1,103 @@
+<resources>
+
+    <dimen name="text_size_minor">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+
+    <dimen name="fab_size">25dp</dimen>
+    <dimen name="fab_right_margin">6dp</dimen>
+
+    <dimen name="family_member_list_item_image_size">45dp</dimen>
+    <dimen name="family_member_list_item_height">72dp</dimen>
+    <dimen name="family_member_list_item_margin">16dp</dimen>
+
+    <dimen name="card_view_shadow_elvation">2dp</dimen>
+
+
+    <dimen name="fab_size_normal">112dp</dimen>
+    <dimen name="fab_icon_size">48dp</dimen>
+    <dimen name="fab_plus_icon_size">28dp</dimen>
+    <dimen name="fab_shadow_radius">18dp</dimen>
+    <dimen name="fab_stroke_width">1dp</dimen>
+
+    <dimen name="margin_1">2dp</dimen>
+    <dimen name="margin_2">4dp</dimen>
+    <dimen name="margin_3">6dp</dimen>
+    <dimen name="margin_4">8dp</dimen>
+    <dimen name="margin_5">10dp</dimen>
+    <dimen name="margin_6">10dp</dimen>
+    <dimen name="margin_7">12dp</dimen>
+    <dimen name="margin_8">16dp</dimen>
+    <dimen name="margin_10">20dp</dimen>
+    <dimen name="margin_12">24dp</dimen>
+    <dimen name="margin_14">16dp</dimen>
+    <dimen name="margin_15">30dp</dimen>
+    <dimen name="margin_16">32dp</dimen>
+    <dimen name="margin_17">34dp</dimen>
+    <dimen name="margin_18">36dp</dimen>
+    <dimen name="margin_20">40dp</dimen>
+    <dimen name="margin_30">60dp</dimen>
+    <dimen name="margin_32">48dp</dimen>
+    <dimen name="margin_35">70dp</dimen>
+    <dimen name="margin_25">50dp</dimen>
+    <dimen name="margin_40">80dp</dimen>
+    <dimen name="margin_45">90dp</dimen>
+    <dimen name="margin_48">64dp</dimen>
+    <dimen name="margin_50">100dp</dimen>
+    <dimen name="margin_52">68dp</dimen>
+    <dimen name="margin_55">110dp</dimen>
+    <dimen name="margin_56">64dp</dimen>
+    <dimen name="margin_70">140dp</dimen>
+    <dimen name="margin_65">130dp</dimen>
+    <dimen name="margin_60">120dp</dimen>
+    <dimen name="margin_80">160dp</dimen>
+    <dimen name="margin_100">200dp</dimen>
+    <dimen name="margin_120">240dp</dimen>
+    <dimen name="margin_130">260dp</dimen>
+    <dimen name="margin_140">280dp</dimen>
+    <dimen name="margin_150">300dp</dimen>
+    <dimen name="margin_200">300dp</dimen>
+    <dimen name="margin_230">350dp</dimen>
+    <dimen name="margin_250">500dp</dimen>
+    <dimen name="margin_300">600dp</dimen>
+    <dimen name="textsize_20">40sp</dimen>
+    <dimen name="textsize_25">30sp</dimen>
+    <dimen name="textsize_30">60sp</dimen>
+    <dimen name="textsize_18">36sp</dimen>
+    <dimen name="textsize_22">44sp</dimen>
+    <dimen name="textsize_15">30sp</dimen>
+    <dimen name="textsize_14">28sp</dimen>
+    <dimen name="textsize_12">24sp</dimen>
+    <dimen name="textsize_13">26sp</dimen>
+    <dimen name="textsize_16">32sp</dimen>
+    <dimen name="textsize_45">90sp</dimen>
+    <dimen name="textsize_10">18sp</dimen>
+    <dimen name="textsize_8">16sp</dimen>
+
+    <dimen name="font_16">14.0sp</dimen>
+    <dimen name="margin_26">26dp</dimen>
+    <dimen name="margin_330">330dp</dimen>
+    <dimen name="margin_160">160dp</dimen>
+    <dimen name="margin_380">380dp</dimen>
+    <dimen name="margin_400">400dp</dimen>
+    <dimen name="margin_450">450dp</dimen>
+    <dimen name="actionBarSize">60dp</dimen>
+    <dimen name="margin_11">11dp</dimen>
+    <dimen name="margin_170">170dp</dimen>
+    <dimen name="margin_85">85dp</dimen>
+    <dimen name="margin_n6">-6dp</dimen>
+    <dimen name="margin_n2">-4dp</dimen>
+  <dimen name="margin_n10">-8dp</dimen>
+    <dimen name="margin_n94dp">-90dp</dimen>
+    <dimen name="margin_n18">-18dp</dimen>
+    <dimen name="margin_n26">-26dp</dimen>
+    <dimen name="margin_n28">-28dp</dimen>
+    <dimen name="margin_165">165dp</dimen>
+    <dimen name="margin_n30">-30dp</dimen>
+    <dimen name="margin_n32">-32dp</dimen>
+    <dimen name="margin_175">175dp</dimen>
+    <dimen name="margin_n40">-42dp</dimen>
+    <dimen name="margin_125">125dp</dimen>
+    <dimen name="margin_275">275dp</dimen>
+    <dimen name="margin_260">260dp</dimen>
+
+</resources>

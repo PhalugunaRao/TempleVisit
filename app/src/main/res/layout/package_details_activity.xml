@@ -7,6 +7,10 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/common_header_top_bar"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -222,7 +226,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Mobile No"
                             android:importantForAutofill="noExcludeDescendants"
-                            android:inputType="text"
+                            android:inputType="phone"
                             android:maxLines="1"
                             android:textColor="@color/card_first"
                             android:textColorHint="@color/cement_color"
@@ -245,7 +249,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Email"
                             android:importantForAutofill="noExcludeDescendants"
-                            android:inputType="text"
+                            android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:textColor="@color/card_first"
                             android:textColorHint="@color/cement_color"
@@ -268,7 +272,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Number of persons "
                             android:importantForAutofill="noExcludeDescendants"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:maxLines="1"
                             android:textColor="@color/card_first"
                             android:textColorHint="@color/cement_color"
@@ -440,7 +444,7 @@
                             android:layout_height="wrap_content"
                             android:hint="PinCode"
                             android:importantForAutofill="noExcludeDescendants"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:maxLines="1"
                             android:textColor="@color/card_first"
                             android:textColorHint="@color/cement_color"

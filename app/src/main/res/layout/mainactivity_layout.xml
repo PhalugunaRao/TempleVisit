@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_16"
+        android:padding="@dimen/margin_10"
         android:orientation="horizontal">
         <com.temples.utils.ProximaNovaTextView
             android:id="@+id/user_name_lable"
@@ -24,10 +25,10 @@
             />
         <ImageView
             android:id="@+id/user_profile_icon"
-            android:layout_width="@dimen/margin_25"
-            android:layout_height="@dimen/margin_25"
+            android:layout_width="@dimen/margin_40"
+            android:layout_height="@dimen/margin_35"
             android:layout_margin="@dimen/margin_5"
-            android:background="@mipmap/ic_launcher"/>
+            android:background="@drawable/ic_user_profile"/>
     </LinearLayout>
 
 

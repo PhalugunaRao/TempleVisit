@@ -20,6 +20,5 @@
     <string name="exception_message">Something went wrong, try again.</string>
     <string name="exception_title">Ooops....</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
-    <string name="no_my_event_title_empty">It seems that you haven’t registered to any events yet. Why don\’t you have a look at all the events
-and see what interests you.</string>
+    <string name="no_my_event_title_empty">It seems that you haven’t booked to any tickets yet.</string>
 </resources>

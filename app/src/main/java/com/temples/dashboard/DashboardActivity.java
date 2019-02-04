@@ -2,42 +2,50 @@ package com.temples.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.temples.R;
-import com.temples.adapter.ViewPagerAdapter;
-import com.temples.custom.CustomViewPager;
 import com.temples.dashboard.fragments.FragmentHistory;
 import com.temples.dashboard.fragments.FragmentPlaces;
 import com.temples.dashboard.fragments.FragmentProfile;
+import com.temples.utils.PreferenceHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
-    private CustomViewPager viewPager;
-    private Fragment currentFragment;
-    private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private PreferenceHelper prefs;
+    Bundle b;
+    String redirectTag = "";
     ImageView homeButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         setContentView(R.layout.dash_board_activity);
+        prefs = new PreferenceHelper(this);
 
-        initializeView();
+        b = getIntent().getExtras();
+        if (b != null) {
+            redirectTag = b.getString("pageStatus");
+        }
 
-        setupViewPager();
-        viewPager.setOffscreenPageLimit(2);
-        currentFragment = adapter.getItem(0);
-
+        initView();
+        setupViewPager(viewPager);
         setupTabView();
+
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,103 +54,73 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-
-    private void initializeView() {
-        viewPager = findViewById(R.id.viewpager);
-        tabLayout = findViewById(R.id.tabs);
-        homeButton=findViewById(R.id.home_button);
-    }
-
-    private void setupViewPager() {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentPlaces(), "Places");
-        adapter.addFragment(new FragmentHistory(), "History");
-        adapter.addFragment(new FragmentProfile(), "Profile");
-        viewPager.setAdapter(adapter);
 
     }
 
     private void setupTabView() {
         tabLayout.setupWithViewPager(viewPager);
-        setupTabIcons();
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        try {
-                            viewPager.setCurrentItem(tab.getPosition());
-                            currentFragment = adapter.getItem(tab.getPosition());
-                            /*if (currentFragment instanceof FragmentDashboard) {
-                                FragmentDashboard fragmentDashboard = (FragmentDashboard) currentFragment;
-                                fragmentDashboard.refreshDataView();
-                            }*/
-                        } catch (NullPointerException e) {
-                        }
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        // setupTabIcons();
 
-                        break;
-                    case 1:
-                        try {
-                            viewPager.setCurrentItem(tab.getPosition());
-                            currentFragment = adapter.getItem(tab.getPosition());
-                        } catch (NullPointerException e) {
-                        }
-                        break;
-                    case 2:
-                        try {
-                            viewPager.setCurrentItem(tab.getPosition());
-                            currentFragment = adapter.getItem(tab.getPosition());
-                        } catch (NullPointerException e) {
-                        }
-                        break;
-
-                    default:
-                        currentFragment = adapter.getItem(tab.getPosition());
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 
-    private void setupTabIcons() {
 
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("Places");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_home_first_tab, 0, 0);
-        tabOne.setCompoundDrawablePadding(10);
-        tabOne.setSelected(true);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("History");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_home_first_tab, 0, 0);
-        tabTwo.setCompoundDrawablePadding(10);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
+    private void initView() {
 
-        TextView three = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        three.setText("Profile");
-        three.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_home_first_tab, 0, 0);
-        three.setCompoundDrawablePadding(10);
-        tabLayout.getTabAt(2).setCustomView(three);
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tabs);
+        homeButton=findViewById(R.id.home_button);
+    }
 
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new FragmentPlaces(), "Places");
+        adapter.addFragment(new FragmentHistory(), "History");
+        adapter.addFragment(new FragmentProfile(), "Others");
+
+        viewPager.setAdapter(adapter);
+
+        if (redirectTag.equalsIgnoreCase("Others")) {
+
+            viewPager.setCurrentItem(2);
+        } else if (redirectTag.equalsIgnoreCase("mybookings")) {
+            viewPager.setCurrentItem(1);
+        } else {
+            viewPager.setCurrentItem(0);
+        }
+    }
+    public void gotoFragment(int pos){
+        viewPager.setCurrentItem(pos);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
-
-
-
-
-

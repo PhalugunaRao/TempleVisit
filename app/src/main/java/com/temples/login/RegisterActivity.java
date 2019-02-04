@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.temples.R;
 import com.temples.dashboard.MainActivity;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.CustomCircularProgress;
 import com.temples.utils.PreferenceHelper;
 import com.temples.utils.UrlData;
 
@@ -229,6 +230,7 @@ public class RegisterActivity extends AppCompatActivity implements NetworkHandle
     }
 
     private void registerVolleyRequest(JSONObject object2) {
+        System.out.println("RegisterActivity.registerVolleyRequest==="+object2.toString());
         String URL = UrlData.SIGNUP;
        /* HashMap<String, String> customHeaders = NetworkHandlerController.getInstance().getCustomHeaders(false,
                 this, prefs,  "");*/
@@ -236,6 +238,20 @@ public class RegisterActivity extends AppCompatActivity implements NetworkHandle
                  this,
                 "register_request");
 
+    }
+    public void dismissDialog() {
+        if (!isFinishing() && CustomCircularProgress.getInstance() != null)
+            CustomCircularProgress.getInstance().dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override

@@ -1,10 +1,14 @@
 package com.temples.details;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -17,6 +21,7 @@ import com.temples.adapter.TemplePassAdapter;
 import com.temples.model.ParkModel;
 import com.temples.model.TempleDetailsData;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.CustomCircularProgress;
 import com.temples.utils.ExpandableHeightListView;
 import com.temples.utils.UrlData;
 
@@ -33,6 +38,8 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
     Bundle bundle;
     String visitingPlaceID;
     RatingBar templeRating;
+    private Toolbar toolbar;
+    TextView toolbarTextView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +50,40 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
         }
         System.out.println("TempleDetailsPage.onCreate=="+visitingPlaceID);
         initViews();
+        setUpToolBar();
+        CustomCircularProgress.getInstance().show(this);
         Thread thread = new Thread(new GetTempleDetailsThread());
         thread.start();
-    }
+        viewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mTempleDetailsData!=null){
+                    if(mTempleDetailsData.getViewMore()!=null && !mTempleDetailsData.getViewMore().isEmpty()){
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mTempleDetailsData.getViewMore()));
+                        startActivity(intent);
+                    }
 
+                }
+
+            }
+        });
+    }
+    private void setUpToolBar() {
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            finish();
+            }
+        });
+    }
     private void initViews() {
+        toolbar = findViewById(R.id.common_toolbar);
+        toolbarTextView=findViewById(R.id.common_toolbarText);
         indicator = findViewById(R.id.pager_indicator);
         pager = findViewById(R.id.pager);
         aboutTemple= findViewById(R.id.temple_detail_about);
@@ -67,13 +103,32 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
     private void getTempleDetails() {
 
         String url = UrlData.TEMPLE_DETAILS+visitingPlaceID;
+        System.out.println("TempleDetailsPage.getTempleDetails==="+url);
         NetworkHandlerController.getInstance().volleyGetRequestT(this, url,
                 this, "temple_details");
 
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dismissDialog();
+    }
+    public void dismissDialog() {
+        if (!isFinishing() && CustomCircularProgress.getInstance() != null)
+            CustomCircularProgress.getInstance().dismiss();
+    }
+
+
+    @Override
     public void onResult(boolean isSuccess, JSONObject resultObject, VolleyError volleyError, ProgressDialog progressDialog, String from) {
+        dismissDialog();
         if(isSuccess){
            mTempleDetailsData = new Gson().fromJson(resultObject.toString(), TempleDetailsData.class);
 
@@ -83,6 +138,7 @@ public class TempleDetailsPage extends AppCompatActivity implements NetworkHandl
                aboutTemple.setText(mTempleDetailsData.getAboutPlace());
                ratingCount.setText(mTempleDetailsData.getNumberOfRatings()+" "+"Ratings");
                templeRating.setRating((float)mTempleDetailsData.getRating());
+               toolbarTextView.setText(mTempleDetailsData.getPlaceName());
 
                if (mTempleDetailsData.getPlaceImage() != null) {
                    if (mTempleDetailsData.getPlaceImage().size() > 0) {

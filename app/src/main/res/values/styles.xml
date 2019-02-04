@@ -16,8 +16,8 @@
     </style>
 
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
-        <item name="android:background">@color/white</item>
-        <item name="android:textColorPrimary">@color/card_main</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/card_main</item>
         <item name="android:elevation" tools:targetApi="lollipop">0dp</item>
     </style>

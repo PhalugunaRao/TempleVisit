@@ -136,12 +136,21 @@
         android:visibility="visible">
 
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
             android:gravity="center"
             android:orientation="vertical">
+            <ImageView
+                android:layout_width="@dimen/margin_250"
+                android:layout_height="@dimen/margin_150"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@drawable/white_logo" />
+
+
 
 
             <ImageView
@@ -153,7 +162,7 @@
 
 
 
-        </LinearLayout>
+        </FrameLayout>
 
 
 

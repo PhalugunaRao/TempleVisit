@@ -67,12 +67,12 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
     @Override
     public void onResume() {
         super.onResume();
-        if (!isVisible) {
+        /*if (!isVisible) {
             if (isLoaded) {
                 Thread thread = new Thread(new GetEventDataThread());
                 thread.start();
             }
-        }
+        }*/
     }
 
     @Override
@@ -98,18 +98,7 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        isVisible = isVisibleToUser;
-        if (isVisibleToUser) {
-            if (!isLoaded) {
-                Thread thread = new Thread(new GetEventDataThread());
-                thread.start();
-            }
-        } else {
-        }
-    }
+
 
     private void initializeView() {
         recyclerView = view.findViewById(R.id.recyclerview_shimmer);
@@ -135,6 +124,7 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
     }
 
     public void registerEventDetails() {
+        System.out.println("FragmentPlaces.backgoundgthreadStoreData==="+context+getActivity());
         isLoaded = true;
         backgoundgthreadStoreData();
         isNoInternetViewDisplaing = false;
@@ -189,6 +179,7 @@ public class FragmentPlaces extends Fragment implements NetworkHandlerController
     }
 
     private void backgoundgthreadStoreData() {
+        System.out.println("FragmentPlaces.backgoundgthreadStoreData==="+context+getActivity()+getContext());
         url =UrlData.PLACES_LIST;
         /*HashMap<String, String> customHeaders = NetworkHandlerController.getInstance().getCustomHeaders(false,
                 context, prefs, customerManager, "");*/

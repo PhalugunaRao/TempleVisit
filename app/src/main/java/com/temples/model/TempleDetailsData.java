@@ -15,6 +15,7 @@ public class TempleDetailsData implements Parcelable{
     private double rating;
     private String visitedCount;
     private String visitingPlaceId;
+    private String viewMore;
 
     protected TempleDetailsData(Parcel in) {
         objTemplePasses = in.createTypedArrayList(TemplePass.CREATOR);
@@ -26,6 +27,7 @@ public class TempleDetailsData implements Parcelable{
         rating = in.readDouble();
         visitedCount = in.readString();
         visitingPlaceId = in.readString();
+        viewMore=in.readString();
     }
 
     public static final Creator<TempleDetailsData> CREATOR = new Creator<TempleDetailsData>() {
@@ -56,6 +58,7 @@ public class TempleDetailsData implements Parcelable{
         dest.writeDouble(rating);
         dest.writeString(visitedCount);
         dest.writeString(visitingPlaceId);
+        dest.writeString(viewMore);
     }
 
     public List<TemplePass> getObjTemplePasses() {
@@ -128,6 +131,14 @@ public class TempleDetailsData implements Parcelable{
 
     public void setVisitingPlaceId(String visitingPlaceId) {
         this.visitingPlaceId = visitingPlaceId;
+    }
+
+    public String getViewMore() {
+        return viewMore;
+    }
+
+    public void setViewMore(String viewMore) {
+        this.viewMore = viewMore;
     }
 
     public static class TemplePass implements Parcelable {

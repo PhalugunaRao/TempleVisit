@@ -2,10 +2,12 @@ package com.temples.details;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -16,12 +18,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.temples.R;
 import com.temples.model.PassModel;
 import com.temples.model.TempleDetailsData;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.CustomCircularProgress;
 import com.temples.utils.PreferenceHelper;
 import com.temples.utils.UrlData;
 
@@ -61,12 +65,21 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     private Calendar date;
     TextView proceed_pay;
     PreferenceHelper prefs;
+    Bundle bundle;
+    String templePassId;
+    private Toolbar toolbar;
+    TextView toolbarTextView;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_details_activity);
         prefs=new PreferenceHelper(this);
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            templePassId = bundle.getString("templePassId", "");
+        }
         initView();
+        setUpToolBar();
         editTextPname();
         editTextPmobile();
         editTextPemail();
@@ -74,6 +87,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         editTextPhouseno();
         editTextPaddress();
         editTextPincode();
+        CustomCircularProgress.getInstance().show(this);
         Thread thread = new Thread(new GetPackageDetailsThread());
         thread.start();
 
@@ -104,6 +118,20 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         });
 
 
+    }
+
+    private void setUpToolBar() {
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private void editTextPincode() {
         editTextPincode.addTextChangedListener(new TextWatcher() {
@@ -359,7 +387,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 object.put("visitingPassId", mPassModel.getTemplePassId());
                 object.put("homeDelivery", myHomeDeliver);
                 object.put("deliveryAddress", pHouseNo+","+pAddress+","+pPinCode);
-                object.put("paymentGatewayCharges", 3);
+                //object.put("paymentGatewayCharges", 3);
                 object.put("tokenId", prefs.getAppToken());
                 object.put("deliveryCharges", 10);
             }else{
@@ -370,7 +398,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 object.put("numberOfPersons", pCount);
                 object.put("visitingPassId", mPassModel.getTemplePassId());
                 object.put("homeDelivery", myHomeDeliver);
-                object.put("paymentGatewayCharges", 3);
+                //object.put("paymentGatewayCharges", 3);
                 object.put("tokenId", prefs.getAppToken());
             }
 
@@ -380,7 +408,15 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         } catch (JSONException e1) {
         } catch (ArrayIndexOutOfBoundsException e) {
         }
-        System.out.println("PackageDetailsActivity.proceedtoPayRequest==="+object.toString());
+        postData(object);
+    }
+
+    private void postData(JSONObject object) {
+        System.out.println("PackageDetailsActivity.postData==="+object.toString());
+        String URL = UrlData.PROCEED_PAYMENT;
+        NetworkHandlerController.getInstance().volleyPOSTRequest(this, URL, Request.Method.POST, object,
+                this,
+                "post_data_package");
     }
 
     public void showDateTimePicker(){
@@ -403,6 +439,8 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     }
 
     private void initView() {
+        toolbar = findViewById(R.id.common_toolbar);
+        toolbarTextView=findViewById(R.id.common_toolbarText);
          textInputLayoutPassengerName=findViewById(R.id.package_passenger_name_float);
          textInputLayoutMobileNumber=findViewById(R.id.floating_mobile);
          textInputLayoutsHouseNo=findViewById(R.id.floating_house);
@@ -436,28 +474,71 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     }
 
     private void getPackageDetails() {
-
-        String url = UrlData.PACKAGE_DETAIL;
+        String url = UrlData.PACKAGE_DETAIL+templePassId;
+        System.out.println("PackageDetailsActivity.getPackageDetails==="+url);
         NetworkHandlerController.getInstance().volleyGetRequestT(this, url,
                 this, "package_details");
 
     }
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dismissDialog();
+    }
+    public void dismissDialog() {
+        if (!isFinishing() && CustomCircularProgress.getInstance() != null)
+            CustomCircularProgress.getInstance().dismiss();
+    }
+    @Override
     public void onResult(boolean isSuccess, JSONObject resultObject, VolleyError volleyError, ProgressDialog progressDialog, String from) {
-
+        dismissDialog();
         if(isSuccess){
-            mPassModel = new Gson().fromJson(resultObject.toString(), PassModel.class);
-            if(mPassModel!=null){
+            switch (from){
+                case "post_data_package":
+                    System.out.println("PackageDetailsActivity.onResult==="+resultObject.toString());
+                    if(resultObject!=null){
+                        try {
+                            String statusCode=resultObject.getString("statusCode");
+                            String bookingId =resultObject.getString("bookingId");
+                            if(statusCode.equalsIgnoreCase("2")){
+                                Intent intent = new Intent(PackageDetailsActivity.this, BookingSuccessActvity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("bookingId",bookingId);
+                                startActivity(intent);
 
-                place_name.setText(mPassModel.getPlaceName());
-                placeAddress.setText(mPassModel.getPlaceAddress());
-                placePrice.setText("Price of Package $"+mPassModel.getFeeAmount());
-                package_validate.setText(mPassModel.getDescription());
+                            }else{
+                                Toast.makeText(PackageDetailsActivity.this,"Something went wrong...",Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
+
+
+                    }
+
+                    break;
+
+                case "package_details":
+                    mPassModel = new Gson().fromJson(resultObject.toString(), PassModel.class);
+                    if(mPassModel!=null){
+                        toolbarTextView.setText(mPassModel.getTypeOfPass());
+                        place_name.setText(mPassModel.getPlaceName());
+                        placeAddress.setText(mPassModel.getPlaceAddress());
+                        placePrice.setText("Price of Package $"+mPassModel.getFeeAmount());
+                        package_validate.setText(mPassModel.getDescription());
+
+                    }
+                    break;
+                    default:
+                        break;
             }
-
-
-
         }else{
 
         }

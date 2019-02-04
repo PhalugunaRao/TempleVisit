@@ -50,7 +50,7 @@ public class PlaceViewHolder extends BaseViewHolder {
                         placeImage.setVisibility(View.VISIBLE);
                         try{
                             Glide.with(context).load(internaleventdata.getPlaceImage())
-                                    .placeholder(R.drawable.ic_bad_internet).error(R.drawable.ic_bad_internet)
+                                    .placeholder(R.drawable.default_event).error(R.drawable.default_event)
                                     .into(placeImage);
                         }catch (Exception e){
 

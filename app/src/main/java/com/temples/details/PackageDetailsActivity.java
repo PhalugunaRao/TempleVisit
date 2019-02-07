@@ -1,42 +1,102 @@
 package com.temples.details;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.temples.R;
+import com.temples.dashboard.MainActivity;
 import com.temples.model.PassModel;
 import com.temples.model.TempleDetailsData;
 import com.temples.network.NetworkHandlerController;
 import com.temples.utils.CustomCircularProgress;
+import com.temples.utils.CustomMultipartRequest;
+import com.temples.utils.FileUtil;
+import com.temples.utils.FileUtility;
+import com.temples.utils.ImageUtility;
 import com.temples.utils.PreferenceHelper;
 import com.temples.utils.UrlData;
+import com.temples.utils.VolleyRequestSingleton;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.jar.Attributes;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import static com.temples.utils.MediaUtils.getUploadEntity;
+import static com.temples.utils.MediaUtils.savebitmap;
+import static java.security.AccessController.getContext;
+
 public class PackageDetailsActivity extends AppCompatActivity implements NetworkHandlerController.ResultListener{
+    public static final int PERMISSION_REQUEST_CODE = 140;
+    private static final int PICKFILE_RESULT_CODE = 105;
+    static final int CAPTURE_IMAGE_REQUEST = 1;
     TextInputLayout textInputLayoutPassengerName;
     TextInputLayout textInputLayoutMobileNumber;
     TextInputLayout textInputLayoutsHouseNo;
@@ -60,7 +120,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     PassModel mPassModel;
     TextView place_name,placeAddress,placePrice,package_validate;
     String pName="",pMobile="",pDate="",pHouseNo="",pAddress="",pPinCode="",pEmail="",pCount="";
-
+    File photoFile = null;
 
     private Calendar date;
     TextView proceed_pay;
@@ -69,6 +129,19 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     String templePassId;
     private Toolbar toolbar;
     TextView toolbarTextView;
+    String  paybleAmount;
+    ImageView uploadPic;
+    private HttpEntity entity;
+    private String mStringUri;
+    private String path;
+    String ba1;
+
+
+    LinearLayout package_price_view,home_collection_view,payment_gateway_charges_view;
+    TextView total_amount_price,package_price;
+    public static List<String> fileTypes = new ArrayList<String>(
+            Arrays.asList(".doc", ".docx", ".pdf", ".zip", ".rar"));
+    private String extension;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +157,9 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         editTextPmobile();
         editTextPemail();
         editTextPnumber();
-        editTextPhouseno();
+        //editTextPhouseno();
         editTextPaddress();
-        editTextPincode();
+       // editTextPincode();
         CustomCircularProgress.getInstance().show(this);
         Thread thread = new Thread(new GetPackageDetailsThread());
         thread.start();
@@ -97,9 +170,15 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 if(isChecked){
                     myHomeDeliver=true;
                     homeCard.setVisibility(View.VISIBLE);
+                    paybleAmount=String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3+1);
+                    home_collection_view.setVisibility(View.VISIBLE);
+                    total_amount_price.setText("$"+paybleAmount);
                 }else{
                     myHomeDeliver=false;
                     homeCard.setVisibility(View.GONE);
+                    paybleAmount=String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3);
+                    home_collection_view.setVisibility(View.GONE);
+                    total_amount_price.setText("$"+paybleAmount);
                 }
             }
         });
@@ -118,6 +197,355 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         });
 
 
+        uploadPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+    }
+
+    private void selectImage() {
+            final CharSequence[] options = {"Take Photo", "Choose from Gallery",};
+            AlertDialog.Builder builder = new AlertDialog.Builder(PackageDetailsActivity.this);
+            builder.setTitle("Attach file or images");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Take Photo")) {
+                            prefs.setPREF_RUNTIME_PERMISSION("Camera");
+                        setFloatingActionButtonCameraFunctionality();
+
+                    } else if (options[item].equals("Choose from Gallery")) {
+                        prefs.setPREF_RUNTIME_PERMISSION("File");
+                        setFloatingActionButtonGalleryFunctionality();
+                    }
+                }
+            });
+            builder.show();
+
+    }
+
+    private void setFloatingActionButtonGalleryFunctionality() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!checkPermission()) {
+                requestPermission();
+            } else {
+                readfileMemory();
+            }
+        } else {
+            readfileMemory();
+        }
+    }
+
+    public void readfileMemory() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!checkPermission()) {
+                requestPermission();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setType("*/*");
+                startActivityForResult(intent, PICKFILE_RESULT_CODE);
+            }
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.setType("*/*");
+            startActivityForResult(intent, PICKFILE_RESULT_CODE);
+        }
+
+    }
+
+    private void setFloatingActionButtonCameraFunctionality() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            aboveLollipopCaptureImage();
+        } else {
+            belowLollipopCaptureImage();
+        }
+
+    }
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
+
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0) {
+
+                    boolean readAccept = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeAccept = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+
+                    if (readAccept && writeAccept) {
+                        switch (prefs.getPREF_RUNTIME_PERMISSION()) {
+                            case "Camera":
+                                aboveLollipopCaptureImage();
+                                break;
+                            case "File":
+                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                intent.setType("*/*");
+                                startActivityForResult(intent, PICKFILE_RESULT_CODE);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "Permission Denied, You cannot access  camera.", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+        }
+    }
+
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case CAPTURE_IMAGE_REQUEST:
+                    firstTimeCamera();
+                    break;
+                case PICKFILE_RESULT_CODE:
+                    try {
+                        ClipData clipData = data.getClipData();
+                        if (clipData != null) {
+                            System.out.println("PackageDetailsActivity.onActivityResult==="+"noooo");
+                            for (int i = 0; i < clipData.getItemCount(); i++) {
+                                ClipData.Item item = clipData.getItemAt(i);
+                                Uri uri = item.getUri();
+                                mStringUri = uri.toString();
+                                Bitmap myBitmap = BitmapFactory.decodeFile(mStringUri);
+                                uploadPic.setImageBitmap(myBitmap);
+                                if (mStringUri.contains("content:")) {
+                                    //checkPathExtensionAndUpload(uri, null);
+                                } else if (mStringUri.contains("file:")) {
+                                    entity = getUploadEntity(mStringUri, 0, "");
+                                    uploadMultipleReport(entity);
+                                }
+                            }
+                        } else {
+                            System.out.println("PackageDetailsActivity.onActivityResult==="+"yeess");
+                            if (data.getDataString() != null) {
+                                Bitmap bm=null;
+                                if (data != null) {
+                                    try {
+                                        bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                uploadPic.setImageBitmap(bm);
+                                String dataString = data.getDataString();
+                                if (dataString.contains("content:")) {
+                                    //checkPathExtensionAndUpload(null, data);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    private void checkPathExtensionAndUpload(Uri uri, Intent data) {
+        if (uri == null)
+            uri = data.getData();
+        if (uri != null) {
+            if (!FileUtility.isGoogleDriveDocument(uri)) {
+                path = FileUtility.getPath(this, uri);
+                if (path != null) {
+                    extension = path.substring(path.lastIndexOf("."));
+                }
+                if (FileUtility.isImageType(extension)) {
+                    uploadBitmap(path, uri);
+
+                } else {
+                    if (fileTypes.contains(extension)) {
+                        try {
+                            entity = getUploadEntity(path, 0, "");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        uploadMultipleReport(entity);
+                    } else {
+                        // throw unsupported format
+                        Toast.makeText(this, "Not support format", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Not support format", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
+    private void uploadBitmap(String path, Uri uri) {
+        try {
+            String fileName = path.substring(path.lastIndexOf("/"));
+            File file = null;
+            file = savebitmap(getBitmapFileUpload(uri), fileName);
+            String url = FileUtil.decodeFile(file.getAbsolutePath(),
+                    getResources().getInteger(R.integer.compressedHeightandWidth),
+                    getResources().getInteger(R.integer.compressedHeightandWidth),
+                    fileName);
+            entity = getUploadEntity(path, 0, url);
+
+            uploadMultipleReport(entity);
+        } catch (IOException e) {
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private Bitmap getBitmapFileUpload(Uri selectedimg) throws IOException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 3;
+        AssetFileDescriptor fileDescriptor = null;
+        fileDescriptor = getContentResolver().openAssetFileDescriptor(selectedimg, "r");
+        assert fileDescriptor != null;
+        return BitmapFactory.decodeFileDescriptor(fileDescriptor.getFileDescriptor(), null, options);
+    }
+    public void uploadMultipleReport(HttpEntity entity) {
+
+            getUploadMultipleReportSatus("http://ticketingapp.nhealth.in/TicketBooking.svc/UploadBookingPersonPhoto", entity);
+
+    }
+    private CustomMultipartRequest.OnTaskCompleted listenerUpload = new CustomMultipartRequest.OnTaskCompleted() {
+
+        @Override
+        public void onTaskCompleted(String method, Object result) {
+            if (result != null) {
+
+            } else {
+                // showAlert(getResources().getString(R.string.no_documents_available), MainActivity.this);
+            }
+        }
+    };
+
+    public void getUploadMultipleReportSatus(String methodName, HttpEntity entity) {
+        try {
+
+            CustomMultipartRequest jsObjRequest = new CustomMultipartRequest(listenerUpload, methodName,
+                    new com.android.volley.Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+
+                        }
+                    }, new com.android.volley.Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response != null) {
+                        System.out.println("PackageDetailsActivity.onResponse==="+response.toString());
+
+
+
+                    }
+
+                }
+            }, entity) {
+
+
+
+            };
+
+            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    0,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleyRequestSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+
+
+        } catch (NullPointerException e) {
+        }
+
+    }
+
+    public void firstTimeCamera() {
+        new Thread(new Runnable() {
+            public void run() {
+                final String path = photoFile.getAbsolutePath();
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        try {
+                            Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+
+                            uploadPic.setImageBitmap(myBitmap);
+                            entity = getUploadEntity(path, 0, "");
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                        uploadMultipleReport(entity);
+                    }
+                });
+            }
+        }).start();
+
+
+    }
+
+    private void belowLollipopCaptureImage() {
+
+        try {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            photoFile = ImageUtility.createImageFile(this, false);
+            if (photoFile != null) {
+                Uri photoURI = Uri.fromFile(photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(cameraIntent, CAPTURE_IMAGE_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void aboveLollipopCaptureImage() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        } else {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                try {
+
+                    photoFile = ImageUtility.createImageFile(this, true);
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(this,
+                                getResources().getString(R.string.provider_name),
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, CAPTURE_IMAGE_REQUEST);
+                    }
+                } catch (Exception ex) {
+                    // Error occurred while creating the File
+                }
+            }
+        }
     }
 
     private void setUpToolBar() {
@@ -356,18 +784,18 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
             Toast.makeText(PackageDetailsActivity.this, "Number of persons required", Toast.LENGTH_SHORT).show();
 
         }
-        if (pHouseNo.isEmpty()) {
+       /* if (pHouseNo.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "House Number or Apartment required", Toast.LENGTH_SHORT).show();
 
-        }
+        }*/
         if (pAddress.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "Address required", Toast.LENGTH_SHORT).show();
 
         }
-        if (pPinCode.isEmpty()) {
+        /*if (pPinCode.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "PinCode required", Toast.LENGTH_SHORT).show();
 
-        }
+        }*/
         else {
             proceedtoPayRequest();
         }
@@ -386,10 +814,10 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 object.put("numberOfPersons", pCount);
                 object.put("visitingPassId", mPassModel.getTemplePassId());
                 object.put("homeDelivery", myHomeDeliver);
-                object.put("deliveryAddress", pHouseNo+","+pAddress+","+pPinCode);
-                //object.put("paymentGatewayCharges", 3);
+                object.put("deliveryAddress", pAddress);
+                object.put("paymentGatewayCharges", 3);
                 object.put("tokenId", prefs.getAppToken());
-                object.put("deliveryCharges", 10);
+                object.put("deliveryCharges", 1);
             }else{
                 object.put("visitingDate", pDate);
                 object.put("personName", pName);
@@ -439,6 +867,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     }
 
     private void initView() {
+        uploadPic=findViewById(R.id.upload_pic);
         toolbar = findViewById(R.id.common_toolbar);
         toolbarTextView=findViewById(R.id.common_toolbarText);
          textInputLayoutPassengerName=findViewById(R.id.package_passenger_name_float);
@@ -465,6 +894,12 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         editTextEmail=findViewById(R.id.edit_email);
         editTextPersons=findViewById(R.id.edit_perosn);
         proceed_pay=findViewById(R.id.proceed_pay);
+
+        package_price_view=findViewById(R.id.package_price_view);
+        home_collection_view=findViewById(R.id.home_collection_view);
+        payment_gateway_charges_view=findViewById(R.id.payment_gateway_charges_view);
+        total_amount_price=findViewById(R.id.total_amount_price);
+        package_price=findViewById(R.id.package_price);
     }
     private class GetPackageDetailsThread implements Runnable {
         @Override
@@ -533,6 +968,9 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                         placeAddress.setText(mPassModel.getPlaceAddress());
                         placePrice.setText("Price of Package $"+mPassModel.getFeeAmount());
                         package_validate.setText(mPassModel.getDescription());
+                        package_price.setText("$"+mPassModel.getFeeAmount());
+                        paybleAmount=String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3);
+                        total_amount_price.setText("$"+String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3));
 
                     }
                     break;

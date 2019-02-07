@@ -10,7 +10,7 @@ public class BookingHIstoryDetailData implements Parcelable {
     private String  deliveryAddress;
     private String  deliveryCharges;
     private String  feeAmount;
-    private String  homeDelivery;
+    private boolean  homeDelivery;
     private String  numberOfPersons;
     private String personEmailId;
     private String personMobileNumber;
@@ -19,6 +19,8 @@ public class BookingHIstoryDetailData implements Parcelable {
     private String  placeName;
     private String typeOfPass;
     private String visitingDate;
+    private String imageFileName;
+
 
     protected BookingHIstoryDetailData(Parcel in) {
         bookingId = in.readString();
@@ -26,7 +28,7 @@ public class BookingHIstoryDetailData implements Parcelable {
         deliveryAddress = in.readString();
         deliveryCharges = in.readString();
         feeAmount = in.readString();
-        homeDelivery = in.readString();
+        homeDelivery = in.readByte() != 0;
         numberOfPersons = in.readString();
         personEmailId = in.readString();
         personMobileNumber = in.readString();
@@ -35,6 +37,7 @@ public class BookingHIstoryDetailData implements Parcelable {
         placeName = in.readString();
         typeOfPass = in.readString();
         visitingDate = in.readString();
+        imageFileName=in.readString();
     }
 
     public static final Creator<BookingHIstoryDetailData> CREATOR = new Creator<BookingHIstoryDetailData>() {
@@ -48,29 +51,6 @@ public class BookingHIstoryDetailData implements Parcelable {
             return new BookingHIstoryDetailData[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(bookingId);
-        dest.writeString(bookingNumber);
-        dest.writeString(deliveryAddress);
-        dest.writeString(deliveryCharges);
-        dest.writeString(feeAmount);
-        dest.writeString(homeDelivery);
-        dest.writeString(numberOfPersons);
-        dest.writeString(personEmailId);
-        dest.writeString(personMobileNumber);
-        dest.writeString(personName);
-        dest.writeString(placeAddress);
-        dest.writeString(placeName);
-        dest.writeString(typeOfPass);
-        dest.writeString(visitingDate);
-    }
 
     public String getBookingId() {
         return bookingId;
@@ -100,6 +80,14 @@ public class BookingHIstoryDetailData implements Parcelable {
         return deliveryCharges;
     }
 
+    public boolean isHomeDelivery() {
+        return homeDelivery;
+    }
+
+    public void setHomeDelivery(boolean homeDelivery) {
+        this.homeDelivery = homeDelivery;
+    }
+
     public void setDeliveryCharges(String deliveryCharges) {
         this.deliveryCharges = deliveryCharges;
     }
@@ -112,13 +100,6 @@ public class BookingHIstoryDetailData implements Parcelable {
         this.feeAmount = feeAmount;
     }
 
-    public String getHomeDelivery() {
-        return homeDelivery;
-    }
-
-    public void setHomeDelivery(String homeDelivery) {
-        this.homeDelivery = homeDelivery;
-    }
 
     public String getNumberOfPersons() {
         return numberOfPersons;
@@ -182,5 +163,37 @@ public class BookingHIstoryDetailData implements Parcelable {
 
     public void setVisitingDate(String visitingDate) {
         this.visitingDate = visitingDate;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(bookingId);
+        dest.writeString(bookingNumber);
+        dest.writeString(deliveryAddress);
+        dest.writeString(deliveryCharges);
+        dest.writeString(feeAmount);
+        dest.writeByte((byte) (homeDelivery ? 1 : 0));
+        dest.writeString(numberOfPersons);
+        dest.writeString(personEmailId);
+        dest.writeString(personMobileNumber);
+        dest.writeString(personName);
+        dest.writeString(placeAddress);
+        dest.writeString(placeName);
+        dest.writeString(typeOfPass);
+        dest.writeString(visitingDate);
+        dest.writeString(imageFileName);
     }
 }

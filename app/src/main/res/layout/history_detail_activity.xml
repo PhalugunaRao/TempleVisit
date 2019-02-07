@@ -14,13 +14,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|top"
+
         android:layout_weight="1"
         android:orientation="vertical">
+        <com.temples.utils.ProximaNovaTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_10"
+            android:maxLines="1"
+            android:text="Booking Details"
+            android:background="@color/gray_semi_transparent"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_20"
+            android:padding="@dimen/margin_12"
+            fab:typeface="proxima_bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+            <com.temples.utils.ProximaNovaTextView
+                android:id="@+id/information_display"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:layout_weight="1"
+                android:gravity="center|top"
+                android:layout_marginRight="@dimen/margin_16"
+                android:maxLines="7"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_16"
+                fab:typeface="proxima_regular"
+                />
+            <ImageView
+                android:layout_width="@dimen/margin_130"
+                android:layout_height="@dimen/margin_130"
+                android:background="@color/black"
+                android:src="@drawable/ic_user_profile"/>
+        </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/margin_130"
-            android:layout_height="@dimen/margin_130"
-            android:background="@drawable/ic_green_tick"/>
         <com.temples.utils.ProximaNovaTextView
             android:id="@+id/visiting_place"
             android:layout_width="match_parent"
@@ -31,27 +69,36 @@
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_10"
             android:maxLines="1"
+            android:visibility="gone"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_18"
             android:padding="@dimen/margin_10"
             fab:typeface="proxima_bold"
             />
 
+
         <LinearLayout
+            android:id="@+id/deliver_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
             android:gravity="center|left"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+            <com.temples.utils.ProximaNovaTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center|left"
+                android:layout_marginRight="@dimen/margin_16"
+                android:maxLines="2"
+                android:text="Deliver Address:"
+                android:textColor="@color/card_main"
+                android:textSize="@dimen/textsize_18"
+                fab:typeface="proxima_bold"
+                />
 
-            <ImageView
-                android:layout_width="@dimen/margin_35"
-                android:layout_height="@dimen/margin_35"
-                android:backgroundTint="#979797"
-                android:padding="@dimen/margin_5"
-                android:src="@drawable/ic_location"/>
             <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/visiting_address"
                 android:layout_width="match_parent"
@@ -60,9 +107,9 @@
                 android:gravity="center|left"
                 android:layout_marginRight="@dimen/margin_16"
                 android:maxLines="2"
+                android:layout_marginTop="@dimen/margin_4"
                 android:textColor="@color/card_second"
                 android:textSize="@dimen/textsize_16"
-                android:padding="@dimen/margin_10"
                 fab:typeface="proxima_regular"
                 />
         </LinearLayout>
@@ -75,14 +122,20 @@
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
             android:gravity="center|left"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/margin_35"
-                android:layout_height="@dimen/margin_35"
-                android:padding="@dimen/margin_5"
-                android:backgroundTint="#979797"
-                android:src="@drawable/ic_calender"/>
+            <com.temples.utils.ProximaNovaTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center|left"
+                android:layout_marginRight="@dimen/margin_16"
+                android:maxLines="2"
+                android:text="Payment Details:"
+                android:textColor="@color/card_main"
+                android:textSize="@dimen/textsize_18"
+                fab:typeface="proxima_bold"
+                />
             <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/visiting_time"
                 android:layout_width="match_parent"
@@ -90,10 +143,10 @@
                 android:ellipsize="end"
                 android:gravity="center|left"
                 android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_4"
                 android:maxLines="2"
                 android:textColor="@color/card_second"
                 android:textSize="@dimen/textsize_16"
-                android:padding="@dimen/margin_10"
                 fab:typeface="proxima_regular"
                 />
         </LinearLayout>
@@ -102,21 +155,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_20"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:gravity="center|left"
+            android:orientation="vertical">
 
             <com.temples.utils.ProximaNovaTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:gravity="center|left"
                 android:maxLines="1"
                 android:text="Booking Id : "
-                android:textColor="@color/card_second"
-                android:textSize="@dimen/textsize_25"
+                android:textColor="@color/card_main"
+                android:textSize="@dimen/textsize_16"
                 fab:typeface="proxima_bold"
                 />
 

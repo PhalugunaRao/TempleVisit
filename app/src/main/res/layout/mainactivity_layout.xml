@@ -83,7 +83,7 @@
                         android:gravity="center|left"
                         android:layout_weight="1"
                         android:textColor="@color/card_first"
-                        android:text="List of Places"
+                        android:text="Temple Pass"
                         fab:typeface="proxima_bold"/>
 
                 </LinearLayout>

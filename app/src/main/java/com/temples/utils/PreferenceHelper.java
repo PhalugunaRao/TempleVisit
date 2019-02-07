@@ -15,6 +15,7 @@ public class PreferenceHelper { public final static String IS_HYDROCARE_NOTIFICA
     private String PREF_USERNAME = "UserName";
     private String PREF_USEREMAIL = "UserEmail";
     private String PREF_MOBILE = "UserMobile";
+    private String PREF_RUNTIME_PERMISSION = "runtimePermission";
 
 
 
@@ -88,7 +89,17 @@ public class PreferenceHelper { public final static String IS_HYDROCARE_NOTIFICA
     }
 
 
+    public String getPREF_RUNTIME_PERMISSION() {
+        String str = mPrefs.getString(PREF_RUNTIME_PERMISSION, "");
+        return str;
 
+    }
+
+    public void setPREF_RUNTIME_PERMISSION(String pref_runtime_permission) {
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putString(PREF_RUNTIME_PERMISSION, pref_runtime_permission);
+        mEditor.commit();
+    }
 
 
 

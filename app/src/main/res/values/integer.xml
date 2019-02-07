@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="compressedHeightandWidth">1024</integer>
+
+    <integer name="int_5">5</integer>
+    <integer name="int_200">200</integer>
+
+    <integer name="int_family_member_list_circle_size">40</integer>
+</resources>

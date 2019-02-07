@@ -76,7 +76,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentPlaces(), "Places");
+        adapter.addFragment(new FragmentPlaces(), "Temple");
         adapter.addFragment(new FragmentHistory(), "History");
         adapter.addFragment(new FragmentProfile(), "Others");
 

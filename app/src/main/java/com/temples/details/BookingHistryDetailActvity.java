@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -25,7 +27,8 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
     String bookingId;
     BookingHIstoryDetailData mBookingHIstoryDetailData;
     private Toolbar toolbar;
-    TextView toolbarTextView;
+    TextView toolbarTextView,information_display;
+    LinearLayout deliver_view;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,6 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbarTextView.setText("My Booking Details");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +63,8 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
         visiting_address=findViewById(R.id.visiting_address);
         visiting_time=findViewById(R.id.visiting_time);
         bookingvocher=findViewById(R.id.booking_id_number);
+        information_display=findViewById(R.id.information_display);
+        deliver_view=findViewById(R.id.deliver_view);
     }
 
     private class GetPackageDetailsThread implements Runnable {
@@ -84,10 +88,19 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
         if (isSuccess){
             mBookingHIstoryDetailData= new Gson().fromJson(resultObject.toString(),BookingHIstoryDetailData.class);
             if(mBookingHIstoryDetailData!=null){
-                visiting_place.setText(mBookingHIstoryDetailData.getPlaceName());
-                visiting_address.setText(mBookingHIstoryDetailData.getPlaceAddress());
-                visiting_time.setText("Your journey Date: "+mBookingHIstoryDetailData.getVisitingDate());
+                toolbarTextView.setText(mBookingHIstoryDetailData.getPlaceName());
+                if(mBookingHIstoryDetailData.isHomeDelivery()){
+                    deliver_view.setVisibility(View.VISIBLE);
+                }else{
+                    deliver_view.setVisibility(View.GONE);
+                }
+                visiting_address.setText(mBookingHIstoryDetailData.getDeliveryAddress());
+                visiting_time.setText("We have received the Payment of the "+" "+mBookingHIstoryDetailData.getTypeOfPass()+" "+"$"+""+String.valueOf(Integer.parseInt(mBookingHIstoryDetailData.getFeeAmount())+Integer.parseInt(mBookingHIstoryDetailData.getDeliveryCharges()+3)));
                 bookingvocher.setText(mBookingHIstoryDetailData.getBookingNumber());
+                String termsRegister = "Mr"+" "+ mBookingHIstoryDetailData.getPersonName()+"</br>"+" You have book the "+mBookingHIstoryDetailData.getTypeOfPass()+" "+ "and your Travel Date is"+
+
+                " "+mBookingHIstoryDetailData.getVisitingDate()+" Note : Show the SMS in the Entrance of the Place";
+                information_display.setText(Html.fromHtml(termsRegister));
 
             }
         }else{

@@ -133,6 +133,8 @@
 
             </android.support.v7.widget.CardView>
 
+
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -290,6 +292,59 @@
 
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8"
+                android:addStatesFromChildren="true"
+                card_view:cardBackgroundColor="@color/card_background_first"
+                android:clickable="true"
+                card_view:cardCornerRadius="6dp"
+                card_view:contentPadding="0dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/white"
+                    android:padding="@dimen/margin_10"
+                    android:orientation="vertical">
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center|left"
+                        android:maxLines="1"
+                        android:text="Upload Image"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_20"
+                        android:padding="@dimen/margin_10"
+                        fab:typeface="proxima_regular"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/card_first"></View>
+
+
+                    <ImageView
+                        android:id="@+id/upload_pic"
+                        android:layout_width="@dimen/margin_80"
+                        android:layout_height="@dimen/margin_80"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:background="@color/card_divider"
+                        android:layout_gravity="center"/>
+
+
+
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+
+
 
             <LinearLayout
                 android:id="@+id/homeCollectionCheckLayout"
@@ -334,7 +389,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center|left"
-                        android:text="$ 10 extra charge"
+                        android:text="$ 1 extra charge"
                         android:paddingLeft="@dimen/margin_5"
                         android:textColor="@color/card_second"
                         android:textSize="@dimen/textsize_14"
@@ -387,6 +442,7 @@
                         android:layout_marginLeft="@dimen/margin_10"
                         android:layout_marginRight="@dimen/margin_10"
                         android:theme="@style/txt_login_style"
+                        android:visibility="gone"
                         fab:errorTextAppearance="@style/error_appearance_login">
 
                         <EditText
@@ -435,6 +491,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_10"
                         android:layout_marginRight="@dimen/margin_10"
+                        android:visibility="gone"
                         android:theme="@style/txt_login_style"
                         fab:errorTextAppearance="@style/error_appearance_login">
 
@@ -457,6 +514,155 @@
 
 
             </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="#fff"
+                android:gravity="center|left"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_16"
+                android:paddingTop="@dimen/margin_14"
+                android:paddingRight="@dimen/margin_16"
+                android:paddingBottom="@dimen/margin_14"
+                android:visibility="visible">
+
+
+
+                <LinearLayout
+                    android:id="@+id/package_price_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/margin_3"
+                        android:text="Package Price"
+                        android:textColor="@color/card_main"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular" />
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/package_price"
+                        android:layout_width="@dimen/margin_80"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:text="$ 10"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_14"
+                        fab:typeface="proxima_bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/home_collection_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/margin_3"
+                        android:text="Home Delivery Charges"
+                        android:textColor="@color/card_main"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular" />
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="@dimen/margin_80"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:text="$ 1"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_14"
+                        fab:typeface="proxima_bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/payment_gateway_charges_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/margin_3"
+                        android:text="Payment Gateway Charges"
+                        android:textColor="@color/card_main"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular" />
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="@dimen/margin_80"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:text="$ 3"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_14"
+                        fab:typeface="proxima_bold" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:background="@color/card_divider"/>
+
+                <LinearLayout
+                    android:id="@+id/total_amount_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/margin_3"
+                        android:text="Total Price"
+                        android:textColor="@color/card_main"
+                        android:textSize="@dimen/textsize_16"
+                        fab:typeface="proxima_regular" />
+
+                    <com.temples.utils.ProximaNovaTextView
+                        android:id="@+id/total_amount_price"
+                        android:layout_width="@dimen/margin_80"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center|left"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textsize_14"
+                        fab:typeface="proxima_bold" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
             <com.temples.utils.ProximaNovaTextView
                 android:id="@+id/proceed_pay"
                 android:layout_width="match_parent"

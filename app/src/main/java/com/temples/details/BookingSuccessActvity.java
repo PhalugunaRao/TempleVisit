@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -89,15 +90,27 @@ public class BookingSuccessActvity extends AppCompatActivity implements NetworkH
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(BookingSuccessActvity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     public void onResult(boolean isSuccess, JSONObject resultObject, VolleyError volleyError, ProgressDialog progressDialog, String from) {
         dismissDialog();
         if (isSuccess){
             mBookingHIstoryDetailData= new Gson().fromJson(resultObject.toString(),BookingHIstoryDetailData.class);
             if(mBookingHIstoryDetailData!=null){
                 visiting_place.setText(mBookingHIstoryDetailData.getPlaceName());
-                visiting_address.setText(mBookingHIstoryDetailData.getPlaceAddress());
-                visiting_time.setText("Your journey Date: "+mBookingHIstoryDetailData.getVisitingDate());
                 bookingIdNumber.setText(mBookingHIstoryDetailData.getBookingNumber());
+                visiting_time.setText("We have received the Payment of the "+" "+mBookingHIstoryDetailData.getTypeOfPass()+" "+"$"+""+String.valueOf(Integer.parseInt(mBookingHIstoryDetailData.getFeeAmount())+Integer.parseInt(mBookingHIstoryDetailData.getDeliveryCharges()+3)));
+                String termsRegister = "Mr"+" "+ mBookingHIstoryDetailData.getPersonName()+"</br>"+" You have book the "+mBookingHIstoryDetailData.getTypeOfPass()+" "+ "and your Travel Date is"+
+
+                        " "+mBookingHIstoryDetailData.getVisitingDate()+" Note : Show the SMS in the Entrance of the Place";
+                visiting_address.setText(Html.fromHtml(termsRegister));
 
             }
         }else{

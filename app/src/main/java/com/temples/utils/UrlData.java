@@ -16,5 +16,6 @@ public class UrlData {
 
     public static String BOOKING_INFO=" http://ticketingapp.nhealth.in/TicketBooking.svc/GetPassBookingInfo/";
     public static String HISTORY_LIST= "http://ticketingapp.nhealth.in/TicketBooking.svc/GetBookingPassHistory/";
+    public static String UPLOAD_IMAGE= "http://ticketingapp.nhealth.in/TicketBooking.svc/UploadBookingPersonPhoto";
 
 }

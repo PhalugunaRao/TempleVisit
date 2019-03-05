@@ -45,6 +45,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.temples.R;
 import com.temples.dashboard.MainActivity;
 import com.temples.model.PassModel;
@@ -76,7 +77,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,6 +92,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static com.temples.utils.MediaUtils.getUploadEntity;
 import static com.temples.utils.MediaUtils.savebitmap;
 import static java.security.AccessController.getContext;
+import android.util.Base64;
 
 public class PackageDetailsActivity extends AppCompatActivity implements NetworkHandlerController.ResultListener{
     public static final int PERMISSION_REQUEST_CODE = 140;
@@ -135,6 +136,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     private String mStringUri;
     private String path;
     String ba1;
+    String imageFileName;
 
 
     LinearLayout package_price_view,home_collection_view,payment_gateway_charges_view;
@@ -333,6 +335,11 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                                 mStringUri = uri.toString();
                                 Bitmap myBitmap = BitmapFactory.decodeFile(mStringUri);
                                 uploadPic.setImageBitmap(myBitmap);
+                                getEncoded64ImageStringFromBitmap(myBitmap);
+                                JSONObject object1 = new JSONObject();
+                                object1.put("imgData",getEncoded64ImageStringFromBitmap(myBitmap));
+
+                                uploadMYIMage(object1);
                                 if (mStringUri.contains("content:")) {
                                     //checkPathExtensionAndUpload(uri, null);
                                 } else if (mStringUri.contains("file:")) {
@@ -352,6 +359,11 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                                     }
                                 }
                                 uploadPic.setImageBitmap(bm);
+                                getEncoded64ImageStringFromBitmap(bm);
+                                JSONObject object1 = new JSONObject();
+                                object1.put("imgData",getEncoded64ImageStringFromBitmap(bm));
+
+                                uploadMYIMage(object1);
                                 String dataString = data.getDataString();
                                 if (dataString.contains("content:")) {
                                     //checkPathExtensionAndUpload(null, data);
@@ -488,23 +500,49 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
             public void run() {
                 final String path = photoFile.getAbsolutePath();
 
+
+
                 runOnUiThread(new Runnable() {
                     public void run() {
                         try {
                             Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
                             uploadPic.setImageBitmap(myBitmap);
-                            entity = getUploadEntity(path, 0, "");
+                            //entity = getUploadEntity(path, 0, "");
+                            System.out.println("PackageDetailsActivity.run==="+getEncoded64ImageStringFromBitmap(myBitmap));
+                            getEncoded64ImageStringFromBitmap(myBitmap);
+                            JSONObject object1 = new JSONObject();
+                            object1.put("imgData",getEncoded64ImageStringFromBitmap(myBitmap));
+
+                            uploadMYIMage(object1);
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
-                        uploadMultipleReport(entity);
+                        //uploadMultipleReport(entity);
                     }
                 });
             }
         }).start();
 
 
+    }
+
+    private void uploadMYIMage(JSONObject object1) {
+        System.out.println("PackageDetailsActivity.postData==="+object1.toString());
+        String URL = UrlData.UPLOAD_IMAGE;
+        NetworkHandlerController.getInstance().volleyPOSTRequest(this, URL, Request.Method.POST, object1,
+                this,
+                "upload_image_data");
+    }
+
+    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        byte[] byteFormat = stream.toByteArray();
+        // get the base 64 string
+        String imgString = android.util.Base64.encodeToString(byteFormat, android.util.Base64.NO_WRAP);
+
+        return imgString;
     }
 
     private void belowLollipopCaptureImage() {
@@ -739,6 +777,9 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     }
 
     private void withoutHomedelivery() {
+        if(imageFileName.isEmpty()){
+            Toast.makeText(PackageDetailsActivity.this, "Passenger Photo required", Toast.LENGTH_SHORT).show();
+        }
         if (pName.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "Passenger Name required", Toast.LENGTH_SHORT).show();
         }
@@ -818,6 +859,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 object.put("paymentGatewayCharges", 3);
                 object.put("tokenId", prefs.getAppToken());
                 object.put("deliveryCharges", 1);
+                object.put("imageFileName",imageFileName);
             }else{
                 object.put("visitingDate", pDate);
                 object.put("personName", pName);
@@ -826,7 +868,8 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 object.put("numberOfPersons", pCount);
                 object.put("visitingPassId", mPassModel.getTemplePassId());
                 object.put("homeDelivery", myHomeDeliver);
-                //object.put("paymentGatewayCharges", 3);
+                object.put("paymentGatewayCharges", 3);
+                object.put("imageFileName",imageFileName);
                 object.put("tokenId", prefs.getAppToken());
             }
 
@@ -935,6 +978,16 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         dismissDialog();
         if(isSuccess){
             switch (from){
+                case "upload_image_data":
+                    System.out.println("PackageDetailsActivity.onResult==="+resultObject.toString());
+                    if(isSuccess){
+                        try {
+                            imageFileName=resultObject.getString("imageFileName");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
                 case "post_data_package":
                     System.out.println("PackageDetailsActivity.onResult==="+resultObject.toString());
                     if(resultObject!=null){

@@ -8,10 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.temples.R;
 import com.temples.dashboard.MainActivity;
@@ -29,6 +31,7 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
     private Toolbar toolbar;
     TextView toolbarTextView,information_display;
     LinearLayout deliver_view;
+   ImageView ticket_image;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
         bookingvocher=findViewById(R.id.booking_id_number);
         information_display=findViewById(R.id.information_display);
         deliver_view=findViewById(R.id.deliver_view);
+        ticket_image=findViewById(R.id.ticket_image);
     }
 
     private class GetPackageDetailsThread implements Runnable {
@@ -101,6 +105,19 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
 
                 " "+mBookingHIstoryDetailData.getVisitingDate()+" Note : Show the SMS in the Entrance of the Place";
                 information_display.setText(Html.fromHtml(termsRegister));
+
+                if (mBookingHIstoryDetailData.getImageFileName() == null || mBookingHIstoryDetailData.getImageFileName().isEmpty()) {
+                    ticket_image.setVisibility(View.VISIBLE);
+                } else {
+                    ticket_image.setVisibility(View.VISIBLE);
+                    try{
+                        Glide.with(this).load(mBookingHIstoryDetailData.getImageFileName())
+                                .placeholder(R.drawable.profile).error(R.drawable.profile)
+                                .into(ticket_image);
+                    }catch (Exception e){
+
+                    }
+                }
 
             }
         }else{

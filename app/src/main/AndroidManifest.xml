@@ -48,6 +48,7 @@
         <activity android:name=".profile.ProfileActivity"></activity>
         <activity android:name=".details.BookingSuccessActvity"></activity>
         <activity android:name=".details.BookingHistryDetailActvity"></activity>
+        <activity android:name=".details.TermsActivity"></activity>
     </application>
 
 </manifest>

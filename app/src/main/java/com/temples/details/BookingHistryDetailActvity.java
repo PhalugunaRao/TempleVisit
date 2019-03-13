@@ -16,9 +16,11 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.temples.R;
+import com.temples.adapter.TemplePassAdapter;
 import com.temples.dashboard.MainActivity;
 import com.temples.model.BookingHIstoryDetailData;
 import com.temples.network.NetworkHandlerController;
+import com.temples.utils.ExpandableHeightListView;
 import com.temples.utils.UrlData;
 
 import org.json.JSONObject;
@@ -32,6 +34,7 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
     TextView toolbarTextView,information_display;
     LinearLayout deliver_view;
    ImageView ticket_image;
+   ExpandableHeightListView personList;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,7 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
         information_display=findViewById(R.id.information_display);
         deliver_view=findViewById(R.id.deliver_view);
         ticket_image=findViewById(R.id.ticket_image);
+        personList=findViewById(R.id.personList);
     }
 
     private class GetPackageDetailsThread implements Runnable {
@@ -106,17 +110,13 @@ public class BookingHistryDetailActvity extends AppCompatActivity implements Net
                 " "+mBookingHIstoryDetailData.getVisitingDate()+" Note : Show the SMS in the Entrance of the Place";
                 information_display.setText(Html.fromHtml(termsRegister));
 
-                if (mBookingHIstoryDetailData.getImageFileName() == null || mBookingHIstoryDetailData.getImageFileName().isEmpty()) {
-                    ticket_image.setVisibility(View.VISIBLE);
-                } else {
-                    ticket_image.setVisibility(View.VISIBLE);
-                    try{
-                        Glide.with(this).load(mBookingHIstoryDetailData.getImageFileName())
-                                .placeholder(R.drawable.profile).error(R.drawable.profile)
-                                .into(ticket_image);
-                    }catch (Exception e){
-
-                    }
+                if (mBookingHIstoryDetailData.getObjVisitingPassMembers() == null || mBookingHIstoryDetailData.getObjVisitingPassMembers().size()>0) {
+                    PersonAdapter mChallengeDataAdapter = new PersonAdapter(this,
+                            mBookingHIstoryDetailData.getObjVisitingPassMembers());
+                    personList.setAdapter(mChallengeDataAdapter);
+                    personList.setExpanded(true);
+                    mChallengeDataAdapter.notifyDataSetChanged();
+                    ticket_image.setVisibility(View.GONE);
                 }
 
             }

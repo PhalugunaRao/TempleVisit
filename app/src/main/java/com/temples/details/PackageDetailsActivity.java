@@ -2,20 +2,18 @@ package com.temples.details;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,24 +26,25 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.temples.R;
 import com.temples.dashboard.MainActivity;
 import com.temples.model.PassModel;
@@ -53,6 +52,7 @@ import com.temples.model.TempleDetailsData;
 import com.temples.network.NetworkHandlerController;
 import com.temples.utils.CustomCircularProgress;
 import com.temples.utils.CustomMultipartRequest;
+import com.temples.utils.ExpandableHeightListView;
 import com.temples.utils.FileUtil;
 import com.temples.utils.FileUtility;
 import com.temples.utils.ImageUtility;
@@ -61,14 +61,7 @@ import com.temples.utils.UrlData;
 import com.temples.utils.VolleyRequestSingleton;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,21 +71,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.jar.Attributes;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static com.temples.utils.MediaUtils.getUploadEntity;
 import static com.temples.utils.MediaUtils.savebitmap;
-import static java.security.AccessController.getContext;
-import android.util.Base64;
 
 public class PackageDetailsActivity extends AppCompatActivity implements NetworkHandlerController.ResultListener{
     public static final int PERMISSION_REQUEST_CODE = 140;
@@ -119,7 +104,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     boolean myHomeDeliver = false;
     CardView homeCard;
     PassModel mPassModel;
-    TextView place_name,placeAddress,placePrice,package_validate;
+    TextView place_name,placeAddress,placePrice,package_validate,paymentGatewayChargeLable,final_total_amount_price;
     String pName="",pMobile="",pDate="",pHouseNo="",pAddress="",pPinCode="",pEmail="",pCount="";
     File photoFile = null;
 
@@ -130,20 +115,33 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     String templePassId;
     private Toolbar toolbar;
     TextView toolbarTextView;
-    String  paybleAmount;
+    double paybleAmount;
     ImageView uploadPic;
     private HttpEntity entity;
     private String mStringUri;
     private String path;
     String ba1;
     String imageFileName;
+    String[] imageFor;
 
 
-    LinearLayout package_price_view,home_collection_view,payment_gateway_charges_view;
+    LinearLayout package_price_view,home_collection_view,payment_gateway_charges_view,final_total_amount_view;
     TextView total_amount_price,package_price;
     public static List<String> fileTypes = new ArrayList<String>(
             Arrays.asList(".doc", ".docx", ".pdf", ".zip", ".rar"));
     private String extension;
+    ExpandableHeightListView captureList;
+    CustomImageAdapter customImageAdapter;
+    ArrayList<GetSet> getSets;
+    int lastPosition;
+    CardView uploadProfileCard;
+    JSONArray jsonArray = new JSONArray();
+
+    JSONObject objectWizard = new JSONObject();
+    TextView terms;
+    double processingFee;
+    double finalProcessingFee;
+    int totalPersonCount=1,deliverCharge=1;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,13 +151,15 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         if (bundle != null) {
             templePassId = bundle.getString("templePassId", "");
         }
+        getSets = new ArrayList<GetSet>();
+        imageFor = getResources().getStringArray(R.array.imageFor);
         initView();
         setUpToolBar();
         editTextPname();
         editTextPmobile();
         editTextPemail();
         editTextPnumber();
-        //editTextPhouseno();
+        editTextPhouseno();
         editTextPaddress();
        // editTextPincode();
         CustomCircularProgress.getInstance().show(this);
@@ -172,16 +172,25 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                 if(isChecked){
                     myHomeDeliver=true;
                     homeCard.setVisibility(View.VISIBLE);
-                    paybleAmount=String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3+1);
                     home_collection_view.setVisibility(View.VISIBLE);
-                    total_amount_price.setText("$"+paybleAmount);
+                    showPriceView(totalPersonCount,myHomeDeliver);
+
+
                 }else{
                     myHomeDeliver=false;
                     homeCard.setVisibility(View.GONE);
-                    paybleAmount=String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3);
                     home_collection_view.setVisibility(View.GONE);
-                    total_amount_price.setText("$"+paybleAmount);
+                    showPriceView(totalPersonCount,myHomeDeliver);
                 }
+            }
+        });
+
+        terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PackageDetailsActivity.this, TermsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -199,15 +208,11 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         });
 
 
-        uploadPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
+
     }
 
-    private void selectImage() {
+    private void selectImage(int listItemPosition) {
+        lastPosition=listItemPosition;
             final CharSequence[] options = {"Take Photo", "Choose from Gallery",};
             AlertDialog.Builder builder = new AlertDialog.Builder(PackageDetailsActivity.this);
             builder.setTitle("Attach file or images");
@@ -334,12 +339,14 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                                 Uri uri = item.getUri();
                                 mStringUri = uri.toString();
                                 Bitmap myBitmap = BitmapFactory.decodeFile(mStringUri);
-                                uploadPic.setImageBitmap(myBitmap);
+                                customImageAdapter.setImageInItem(lastPosition, myBitmap, getEncoded64ImageStringFromBitmap(myBitmap));
+
+                               /* uploadPic.setImageBitmap(myBitmap);
                                 getEncoded64ImageStringFromBitmap(myBitmap);
                                 JSONObject object1 = new JSONObject();
                                 object1.put("imgData",getEncoded64ImageStringFromBitmap(myBitmap));
 
-                                uploadMYIMage(object1);
+                                uploadMYIMage(object1);*/
                                 if (mStringUri.contains("content:")) {
                                     //checkPathExtensionAndUpload(uri, null);
                                 } else if (mStringUri.contains("file:")) {
@@ -358,12 +365,14 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                                         e.printStackTrace();
                                     }
                                 }
-                                uploadPic.setImageBitmap(bm);
+                                customImageAdapter.setImageInItem(lastPosition, bm, getEncoded64ImageStringFromBitmap(bm));
+
+                               /* uploadPic.setImageBitmap(bm);
                                 getEncoded64ImageStringFromBitmap(bm);
                                 JSONObject object1 = new JSONObject();
                                 object1.put("imgData",getEncoded64ImageStringFromBitmap(bm));
 
-                                uploadMYIMage(object1);
+                                uploadMYIMage(object1);*/
                                 String dataString = data.getDataString();
                                 if (dataString.contains("content:")) {
                                     //checkPathExtensionAndUpload(null, data);
@@ -507,14 +516,18 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                         try {
                             Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
-                            uploadPic.setImageBitmap(myBitmap);
+                          /*  uploadPic.setImageBitmap(myBitmap);
                             //entity = getUploadEntity(path, 0, "");
                             System.out.println("PackageDetailsActivity.run==="+getEncoded64ImageStringFromBitmap(myBitmap));
                             getEncoded64ImageStringFromBitmap(myBitmap);
                             JSONObject object1 = new JSONObject();
                             object1.put("imgData",getEncoded64ImageStringFromBitmap(myBitmap));
 
-                            uploadMYIMage(object1);
+                            uploadMYIMage(object1);*/
+
+
+                            customImageAdapter.setImageInItem(lastPosition, myBitmap, getEncoded64ImageStringFromBitmap(myBitmap));
+
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
@@ -681,9 +694,14 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 if (editTextPersons.getText().toString().isEmpty()) {
+                    captureList.setVisibility(View.GONE);
+                    defaultMoney();
                     Toast.makeText(PackageDetailsActivity.this, "Invalid Count", Toast.LENGTH_SHORT).show();
                 }else{
                     pCount=editTextPersons.getText().toString();
+                    uploadProfileCard.setVisibility(View.VISIBLE);
+                    displayListData(Integer.parseInt(pCount));
+
                 }
             }
 
@@ -692,6 +710,55 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
 
             }
         });
+    }
+
+    private void displayListData(int totalcount) {
+        totalPersonCount=totalcount;
+        showPriceView(totalPersonCount,myHomeDeliver);
+        System.out.println("PackageDetailsActivity.displayListData==="+totalcount);
+        captureList.setVisibility(View.VISIBLE);
+        getSets.clear();
+        for (int i = 0; i < totalcount; i++) {
+
+            GetSet inflate = new GetSet();
+            // Global Values
+            inflate.setUid(String.valueOf(i));
+
+            inflate.setLabel("");
+            inflate.setHaveImage(false);
+            inflate.setSubtext("");
+            inflate.setStatus(true);
+
+            getSets.add(inflate);
+        }
+        customImageAdapter = new CustomImageAdapter(getSets, PackageDetailsActivity.this);
+        captureList.setAdapter(customImageAdapter);
+        captureList.setExpanded(true);
+
+    }
+
+    private void showPriceView(int totalPersonCount, boolean isHome) {
+
+        if(isHome){
+            paymentGatewayChargeLable.setText(" $ "+totalPersonCount);
+            package_price.setText("$"+Integer.parseInt(mPassModel.getFeeAmount())*totalPersonCount);
+            processingFee = Double.parseDouble(String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())*totalPersonCount+deliverCharge+totalPersonCount));
+            finalProcessingFee= (processingFee / 100.0f) * 4;
+
+            total_amount_price.setText("$"+processingFee);
+            paybleAmount=finalProcessingFee+processingFee;
+            final_total_amount_price.setText("$"+paybleAmount);
+
+        }else{
+            paymentGatewayChargeLable.setText(" $ "+totalPersonCount);
+            package_price.setText("$"+Integer.parseInt(mPassModel.getFeeAmount())*totalPersonCount);
+            processingFee = Double.parseDouble(String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())*totalPersonCount+totalPersonCount));
+            finalProcessingFee= (processingFee / 100.0f) * 4;
+            total_amount_price.setText("$"+processingFee);
+            paybleAmount=finalProcessingFee+processingFee;
+            final_total_amount_price.setText("$"+paybleAmount);
+        }
+
     }
 
     private void editTextPemail() {
@@ -777,12 +844,14 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
     }
 
     private void withoutHomedelivery() {
-        if(imageFileName.isEmpty()){
+
+
+        /*if(imageFileName.isEmpty()){
             Toast.makeText(PackageDetailsActivity.this, "Passenger Photo required", Toast.LENGTH_SHORT).show();
-        }
-        if (pName.isEmpty()) {
+        }*/
+       /* if (pName.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "Passenger Name required", Toast.LENGTH_SHORT).show();
-        }
+        }*/
         if (pDate.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "journey date is required", Toast.LENGTH_SHORT).show();
 
@@ -800,15 +869,43 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
 
         }
         else {
+            System.out.println("PackageDetailsActivity.withoutHomedelivery==="+getSets.size());
+            for (int i = 0; i < getSets.size(); i++) {
+                try {
+                    if(getSets.get(i).getEditTextValue().equalsIgnoreCase("")){
+                        Toast.makeText(PackageDetailsActivity.this, "FirstName is required", Toast.LENGTH_SHORT).show();
+                    }else if(getSets.get(i).getLabel().equalsIgnoreCase("")){
+                        Toast.makeText(PackageDetailsActivity.this, "LastName is required", Toast.LENGTH_SHORT).show();
+                    }else if(getSets.get(i).getStream().equalsIgnoreCase("")){
+                        Toast.makeText(PackageDetailsActivity.this, "Image is required", Toast.LENGTH_SHORT).show();
+                    }else{
+                        try {
+                            JSONObject object = new JSONObject();
+                            System.out.println("PackageDetailsActivity.withoutHomedelivery==="+getSets.get(i).getEditTextValue());
+                            object.put("firstName", getSets.get(i).getEditTextValue());
+                            object.put("lastName", getSets.get(i).getLabel());
+                            object.put("imageFile", getSets.get(i).getStream());
+                            jsonArray.put(object);
+                        } catch (JSONException e1) {
+                        }
+
+                    }
+
+                } catch (Exception e1) {
+                }
+            }
+            System.out.println("PackageDetailsActivity.withoutHomedelivery==="+jsonArray.toString());
+
             proceedtoPayRequest();
         }
 
     }
 
     private void withHomedelivery() {
-        if (pName.isEmpty()) {
+        /*if (pName.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "Passenger Name required", Toast.LENGTH_SHORT).show();
-        }
+        }*/
+
         if (pDate.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "journey date is required", Toast.LENGTH_SHORT).show();
 
@@ -825,10 +922,10 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
             Toast.makeText(PackageDetailsActivity.this, "Number of persons required", Toast.LENGTH_SHORT).show();
 
         }
-       /* if (pHouseNo.isEmpty()) {
-            Toast.makeText(PackageDetailsActivity.this, "House Number or Apartment required", Toast.LENGTH_SHORT).show();
+        if (pHouseNo.isEmpty()) {
+            Toast.makeText(PackageDetailsActivity.this, "Hotel Name required", Toast.LENGTH_SHORT).show();
 
-        }*/
+        }
         if (pAddress.isEmpty()) {
             Toast.makeText(PackageDetailsActivity.this, "Address required", Toast.LENGTH_SHORT).show();
 
@@ -838,7 +935,30 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
 
         }*/
         else {
-            proceedtoPayRequest();
+            for (int i = 0; i < getSets.size(); i++) {
+                try {
+                    if(getSets.get(i).getEditTextValue().equalsIgnoreCase("")){
+                        Toast.makeText(PackageDetailsActivity.this, "FirstName is required", Toast.LENGTH_SHORT).show();
+                    }else if(getSets.get(i).getLabel().equalsIgnoreCase("")){
+                        Toast.makeText(PackageDetailsActivity.this, "LastName is required", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(getSets.get(i).getStream().equalsIgnoreCase("")){
+                        Toast.makeText(PackageDetailsActivity.this, "Image is required", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        JSONObject object = new JSONObject();
+                        System.out.println("PackageDetailsActivity.withoutHomedelivery==="+getSets.get(i).getEditTextValue());
+                        object.put("firstName", getSets.get(i).getEditTextValue());
+                        object.put("lastName", getSets.get(i).getLabel());
+                        object.put("imageFile", getSets.get(i).getStream());
+                        jsonArray.put(object);
+                    }
+                    proceedtoPayRequest();
+
+                } catch (Exception e1) {
+                }
+            }
+
         }
     }
 
@@ -849,28 +969,31 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
 
             if(myHomeDeliver){
                 object.put("visitingDate", pDate);
-                object.put("personName", pName);
+                //object.put("personName", pName);
                 object.put("personMobileNumber", pMobile);
                 object.put("personEmailId", pEmail);
                 object.put("numberOfPersons", pCount);
                 object.put("visitingPassId", mPassModel.getTemplePassId());
                 object.put("homeDelivery", myHomeDeliver);
-                object.put("deliveryAddress", pAddress);
+                object.put("deliveryAddress", pHouseNo+","+pAddress);
                 object.put("paymentGatewayCharges", 3);
                 object.put("tokenId", prefs.getAppToken());
                 object.put("deliveryCharges", 1);
-                object.put("imageFileName",imageFileName);
+                //object.put("imageFileName",imageFileName);
+                object.put("objVisitingPassMembers", jsonArray);
+
             }else{
                 object.put("visitingDate", pDate);
-                object.put("personName", pName);
+                //object.put("personName", pName);
                 object.put("personMobileNumber", pMobile);
                 object.put("personEmailId", pEmail);
                 object.put("numberOfPersons", pCount);
                 object.put("visitingPassId", mPassModel.getTemplePassId());
                 object.put("homeDelivery", myHomeDeliver);
                 object.put("paymentGatewayCharges", 3);
-                object.put("imageFileName",imageFileName);
+               // object.put("imageFileName",imageFileName);
                 object.put("tokenId", prefs.getAppToken());
+                object.put("objVisitingPassMembers", jsonArray);
             }
 
 
@@ -879,6 +1002,8 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         } catch (JSONException e1) {
         } catch (ArrayIndexOutOfBoundsException e) {
         }
+        System.out.println("PackageDetailsActivity.proceedtoPayRequest==="+object.toString());
+        CustomCircularProgress.getInstance().show(this);
         postData(object);
     }
 
@@ -943,6 +1068,12 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         payment_gateway_charges_view=findViewById(R.id.payment_gateway_charges_view);
         total_amount_price=findViewById(R.id.total_amount_price);
         package_price=findViewById(R.id.package_price);
+        captureList=findViewById(R.id.captureList);
+        uploadProfileCard=findViewById(R.id.upload_profile_card);
+        terms=findViewById(R.id.terms);
+        paymentGatewayChargeLable=findViewById(R.id.payment_charges);
+        final_total_amount_view=findViewById(R.id.final_total_amount_view);
+        final_total_amount_price=findViewById(R.id.final_total_amount_price);
     }
     private class GetPackageDetailsThread implements Runnable {
         @Override
@@ -979,7 +1110,6 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
         if(isSuccess){
             switch (from){
                 case "upload_image_data":
-                    System.out.println("PackageDetailsActivity.onResult==="+resultObject.toString());
                     if(isSuccess){
                         try {
                             imageFileName=resultObject.getString("imageFileName");
@@ -989,7 +1119,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                     }
                     break;
                 case "post_data_package":
-                    System.out.println("PackageDetailsActivity.onResult==="+resultObject.toString());
+                    CustomCircularProgress.getInstance().dismiss();
                     if(resultObject!=null){
                         try {
                             String statusCode=resultObject.getString("statusCode");
@@ -1019,11 +1149,10 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
                         toolbarTextView.setText(mPassModel.getTypeOfPass());
                         place_name.setText(mPassModel.getPlaceName());
                         placeAddress.setText(mPassModel.getPlaceAddress());
-                        placePrice.setText("Price of Package $"+mPassModel.getFeeAmount());
-                        package_validate.setText(mPassModel.getDescription());
-                        package_price.setText("$"+mPassModel.getFeeAmount());
-                        paybleAmount=String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3);
-                        total_amount_price.setText("$"+String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+3));
+                        defaultMoney();
+
+
+
 
                     }
                     break;
@@ -1034,4 +1163,181 @@ public class PackageDetailsActivity extends AppCompatActivity implements Network
 
         }
     }
-}
+
+    private void defaultMoney() {
+        placePrice.setText("Price of Package $"+mPassModel.getFeeAmount());
+        package_validate.setText(mPassModel.getDescription());
+        package_price.setText("$"+mPassModel.getFeeAmount());
+        paymentGatewayChargeLable.setText(" $ 1");
+        processingFee = Double.parseDouble(String.valueOf(Integer.parseInt(mPassModel.getFeeAmount())+1));
+        finalProcessingFee= (processingFee / 100.0f) * 4;
+        // paymentGatewayChargeLable.setText();
+        total_amount_price.setText("$"+processingFee);
+        paybleAmount=finalProcessingFee+processingFee;
+        final_total_amount_price.setText("$"+paybleAmount);
+    }
+
+    private class CustomImageAdapter extends BaseAdapter {
+
+        List<GetSet> _data;
+        Context _c;
+        ViewHolder v;
+
+        public CustomImageAdapter(List<GetSet> getData, Context context) {
+            _data = getData;
+            _c = context;
+        }
+
+        @Override
+        public int getCount() {
+            return _data.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return _data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+
+            if (view == null) {
+                LayoutInflater li = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = li.inflate(R.layout.details, null);
+            } else {
+                view = convertView;
+            }
+
+            v = new ViewHolder();
+            v.clickImage = (ImageButton) view.findViewById(R.id.capture);
+            v.removeImage = (ImageButton) view.findViewById(R.id.cancel);
+            v.parcelName = (EditText) view.findViewById(R.id.parcelName);
+            v.label = (EditText) view.findViewById(R.id.imageFor);
+            v.imageView = (ImageView) view.findViewById(R.id.imgPrv);
+
+            // Set data in listView
+            final GetSet dataSet = (GetSet) _data.get(position);
+
+            dataSet.setListItemPosition(position);
+
+            if (!dataSet.getEditTextValue().isEmpty()) {
+                v.parcelName.setText(dataSet.getEditTextValue());
+            } else {
+                v.parcelName.setText("");
+                v.parcelName.setHint("First Name");
+            }
+
+            if (!dataSet.getLabel().isEmpty()) {
+                v.label.setText(dataSet.getLabel());
+            } else {
+                v.label.setText("");
+                v.label.setHint("Last Name");
+            }
+
+            if (!dataSet.isHaveImage()) {
+                Bitmap icon = BitmapFactory.decodeResource(_c.getResources(), R.drawable.ic_upload);
+                v.imageView.setImageBitmap(icon);
+            } else {
+                v.imageView.setImageBitmap(dataSet.getImage());
+            }
+            v.parcelName.setText(dataSet.getEditTextValue());
+            v.label.setText(dataSet.getLabel());
+            if (dataSet.isStatus()) {
+                v.clickImage.setVisibility(View.GONE);
+                v.removeImage.setVisibility(View.GONE);
+            } else {
+                v.removeImage.setVisibility(View.GONE);
+                v.clickImage.setVisibility(View.GONE);
+            }
+
+            v.clickImage.setFocusable(false);
+            v.removeImage.setFocusable(false);
+            v.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((PackageDetailsActivity) _c).selectImage(dataSet.getListItemPosition());
+                }
+            });
+
+            v.parcelName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        EditText editText = (EditText) v;
+                        if (editText.getText().toString().equalsIgnoreCase("")) {
+
+                        } else {
+
+                                dataSet.setEditTextValue(editText.getText().toString());
+
+                        }
+
+                    }
+                }
+            });
+
+            v.label.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        EditText editText = (EditText) v;
+                        if (editText.getText().toString().equalsIgnoreCase("")) {
+
+                        } else {
+                            dataSet.setLabel(editText.getText().toString());
+
+                        }
+
+                    }
+                }
+            });
+
+            v.clickImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Call parent method of activity to click image
+                   // ((PackageDetailsActivity) _c).selectImage(dataSet.getListItemPosition());
+                }
+            });
+
+            v.removeImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dataSet.setStatus(true);
+                    dataSet.setHaveImage(false);
+                    notifyDataSetChanged();
+                }
+            });
+
+
+            return view;
+        }
+
+        /**
+         * @param position Get position of of object
+         * @param imageSrc set image in imageView
+         */
+        public void setImageInItem(int position, Bitmap imageSrc, String streamPath) {
+            GetSet dataSet = (GetSet) _data.get(position);
+            dataSet.setImage(imageSrc);
+            dataSet.setStream(streamPath);
+            dataSet.setStatus(false);
+            dataSet.setHaveImage(true);
+            notifyDataSetChanged();
+        }
+
+        class ViewHolder {
+            ImageView imageView;
+            EditText label, parcelName;
+            ImageButton clickImage, removeImage;
+        }
+    }
+
+
+    }

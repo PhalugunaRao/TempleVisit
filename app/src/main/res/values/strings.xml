@@ -22,4 +22,37 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="no_my_event_title_empty">It seems that you haven’t booked to any tickets yet.</string>
     <string name="provider_name">com.temples.fileprovider</string>
+    <string-array name="imageFor">
+        <item>@drawable/ic_upload</item>
+        <item>@drawable/ic_upload</item>
+        <item>@drawable/ic_upload</item>
+    </string-array>
+
+    <string name="hello">
+            <![CDATA[
+            <html>
+             <head></head>
+             <body style="text-align:justify;color:black;font-size:20;background-color:white;">
+              <h3>Terms & Conditions:</h3>
+                1)Not refundable within 14 days of visit date. Refund of 75% before 14 days available upon request.</br>
+                2)Purchase minimum of 24 hours before use.</br>
+                3)Passport photo must be recent and recognizable (selfie is acceptable)</br>
+                4)Lost tickets are non-refundable</br>
+                5)Each ticket’s “day” sunrise to sunset</br>
+                6)Ticket is valid for all Siem Reap temples and ruins but not for other districts of Cambodia (Example: Phnom Kulen, Beong Mealea, Koh Ker).</br></br>
+
+                <b>Angkor Passes and Prices :</b></br>
+                1-day Pass = USD 37</br>
+                3-day Pass = USD 62</br>
+                7-day Pass = USD 72</br><br>
+                <b>Our services fee :</b></br>
+                USD 1 per ticket for each pass</br></br>
+                <b>Delivery fee :</b></br>
+                USD 1 per delivery to hotels or Guesthouses in Siem Reap (if clients need this delivery services, clients need to mention address, name of place, and receiving date/time).</br></br>
+                <b>Processing fee :</b></br>
+                4% on the top of the total amount</br>
+             </body>
+            </html>
+            ]]>
+</string>
 </resources>
